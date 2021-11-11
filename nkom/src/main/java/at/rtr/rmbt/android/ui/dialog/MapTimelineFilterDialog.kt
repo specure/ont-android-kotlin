@@ -14,6 +14,7 @@ import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.databinding.DialogFiltersBinding
 import at.rtr.rmbt.android.di.Injector
 import at.rtr.rmbt.android.viewmodel.MapFiltersViewModel
+import timber.log.Timber
 
 class MapTimelineFilterDialog : FullscreenDialog(), MapFiltersConfirmationDialog.Callback {
 
@@ -92,7 +93,7 @@ class MapTimelineFilterDialog : FullscreenDialog(), MapFiltersConfirmationDialog
 
         binding.yearPicker.setOnValueChangedListener { picker, oldVal, newVal ->
             if (oldVal != newVal) {
-                updateMonthPickerList(newVal)
+                updateMonthPickerList(newVal, oldVal)
                 viewModel.filterSelectedYear = viewModel.yearList[newVal]
                 viewModel.filterSelectedMonth = viewModel.monthNumbersForYearHashMap[viewModel.filterSelectedYear]!![0] + 1
             }
@@ -108,15 +109,27 @@ class MapTimelineFilterDialog : FullscreenDialog(), MapFiltersConfirmationDialog
         binding.close.setOnClickListener { dismiss() }
     }
 
-    private fun updateMonthPickerList(newVal: Int) {
+    private fun updateMonthPickerList(newVal: Int, oldVal: Int) {
         val selectedYear = viewModel.yearList[newVal]
-        binding.monthPicker.apply {
-            value = minValue
-            displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
-            maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
-            minValue = 0
-            wrapSelectorWheel = false
-            showDividers = SHOW_DIVIDER_NONE
+        Timber.d("Old picked value: ${binding.monthPicker.value}    new set: ${viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1}")
+        if (newVal > oldVal) {
+            binding.monthPicker.apply {
+                minValue = 0
+                maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
+                displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
+                value = minValue
+                wrapSelectorWheel = false
+                showDividers = SHOW_DIVIDER_NONE
+            }
+        } else {
+            binding.monthPicker.apply {
+                value = minValue
+                displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
+                maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
+                minValue = 0
+                wrapSelectorWheel = false
+                showDividers = SHOW_DIVIDER_NONE
+            }
         }
     }
 
