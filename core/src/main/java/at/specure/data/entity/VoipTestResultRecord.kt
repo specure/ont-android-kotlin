@@ -106,8 +106,8 @@ fun VoipTestResultRecord.getPacketLoss(): Double? {
     var packetLossPercent: Double? = null
     if (this.objectiveCallDuration != null && this.objectiveDelay != null && this.resultInNumPackets != null && this.resultOutNumPackets != null) {
         val total = (this.objectiveCallDuration!! / this.objectiveDelay!!)
-        val packetLossDown = (total - this.resultInNumPackets!!) / total
-        val packetLossUp = (total - this.resultOutNumPackets!!) / total
+        val packetLossDown = (total - this.resultInNumPackets!!) / total.toDouble()
+        val packetLossUp = (total - this.resultOutNumPackets!!) / total.toDouble()
         packetLossPercent = (packetLossDown + packetLossUp) / 2.toDouble()
     }
     return packetLossPercent
