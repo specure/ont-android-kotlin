@@ -123,7 +123,7 @@ class MapTimelineFilterDialog : FullscreenDialog(), MapFiltersConfirmationDialog
             }
         } else {
             binding.monthPicker.apply {
-                value = minValue
+                value = 0
                 displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
                 maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
                 minValue = 0
