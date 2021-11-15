@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/label"
+            android:id="@+id/label_v6"
             style="@style/Text.NetworkInfoSlider.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             tools:text="ipv4" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/label_private"
+            android:id="@+id/label_private_v6"
             style="@style/Text.NetworkInfoSlider.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,20 +30,20 @@
             android:text="@string/private_ip_address"
             android:textAllCaps="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label" />
+            app:layout_constraintTop_toBottomOf="@id/label_v6" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_private"
+            android:id="@+id/text_private_v6"
             style="@style/Text.NetworkInfoSlider.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="true"
-            app:layout_constraintStart_toStartOf="@id/label_private"
-            app:layout_constraintTop_toBottomOf="@id/label_private"
+            app:layout_constraintStart_toStartOf="@id/label_private_v6"
+            app:layout_constraintTop_toBottomOf="@id/label_private_v6"
             tools:text="10.76.24.79" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/label_public"
+            android:id="@+id/label_public_v6"
             style="@style/Text.NetworkInfoSlider.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,27 +51,27 @@
             android:text="@string/public_ip_address"
             android:textAllCaps="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/text_private" />
+            app:layout_constraintTop_toBottomOf="@id/text_private_v6" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_public"
+            android:id="@+id/text_public_v6"
             style="@style/Text.NetworkInfoSlider.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAllCaps="true"
-            app:layout_constraintStart_toStartOf="@id/label_public"
-            app:layout_constraintTop_toBottomOf="@id/label_public"
+            app:layout_constraintStart_toStartOf="@id/label_public_v6"
+            app:layout_constraintTop_toBottomOf="@id/label_public_v6"
             tools:text="46.34.236.9" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/text_not_available"
+            android:id="@+id/text_not_available_v6"
             style="@style/Text.NetworkInfoSlider.Value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/text_ip_address_not_available"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/label" />
+            app:layout_constraintTop_toBottomOf="@id/label_v6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
