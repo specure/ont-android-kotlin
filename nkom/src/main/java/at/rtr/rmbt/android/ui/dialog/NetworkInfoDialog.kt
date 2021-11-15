@@ -163,16 +163,18 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
                 binding.infoIpv4.textPrivate.visibility = View.GONE
                 binding.infoIpv4.labelPrivate.visibility = View.GONE
             }
-
-            binding.infoIpv4.textPublicV6.visibility = View.GONE
-            binding.infoIpv4.labelPublicV6.visibility = View.GONE
             binding.infoIpv4.executePendingBindings()
         }
 
         ipV6ChangeLiveData.listen(viewLifecycleOwner) { ipInfo ->
-            ipInfo?.let { setIpViewBackground(binding.infoIpv6.label, it, getString(R.string.text_label_ipv6)) }
-            binding.infoIpv6.textNotAvailable.visibility =
+            ipInfo?.let { setIpViewBackground(binding.infoIpv6.labelV6, it, getString(R.string.text_label_ipv6)) }
+            binding.infoIpv6.textNotAvailableV6.visibility =
                 if (ipInfo != null && (ipInfo.ipStatus == IpStatus.NO_ADDRESS || ipInfo.ipStatus == IpStatus.NO_INFO)) View.VISIBLE else View.GONE
+
+            binding.infoIpv6.textPrivateV6.visibility = View.GONE
+            binding.infoIpv6.labelPrivateV6.visibility = View.GONE
+            binding.infoIpv6.textPublicV6.visibility = View.GONE
+            binding.infoIpv6.labelPublicV6.visibility = View.GONE
 
             if (ipInfo != null && ipInfo.protocol == IpProtocol.V6 && ipInfo.publicAddress != null && ipInfo.ipStatus != IpStatus.NO_ADDRESS) {
                 binding.infoIpv6.textPublicV6.text = ipInfo.publicAddress
@@ -183,10 +185,14 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
                 binding.infoIpv6.labelPublicV6.visibility = View.GONE
             }
 
-            binding.infoIpv6.textPrivate.visibility = View.GONE
-            binding.infoIpv6.labelPrivate.visibility = View.GONE
-            binding.infoIpv6.textPublic.visibility = View.GONE
-            binding.infoIpv6.labelPublic.visibility = View.GONE
+            if (ipInfo?.privateAddress != null && ipInfo.ipStatus != IpStatus.NO_ADDRESS && ipInfo.publicAddress != ipInfo.privateAddress) {
+                binding.infoIpv6.textPrivateV6.text = ipInfo.privateAddress
+                binding.infoIpv6.textPrivateV6.visibility = View.VISIBLE
+                binding.infoIpv6.labelPrivateV6.visibility = View.VISIBLE
+            } else {
+                binding.infoIpv6.textPrivateV6.visibility = View.GONE
+                binding.infoIpv6.labelPrivateV6.visibility = View.GONE
+            }
         }
     }
 
