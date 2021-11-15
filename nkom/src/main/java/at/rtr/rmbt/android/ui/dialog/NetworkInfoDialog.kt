@@ -146,6 +146,9 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
             binding.infoIpv4.textNotAvailable.visibility =
                 if (ipInfo != null && (ipInfo.ipStatus == IpStatus.NO_ADDRESS || ipInfo.ipStatus == IpStatus.NO_INFO)) View.VISIBLE else View.GONE
 
+            binding.infoIpv4.textPublicV6.visibility = View.GONE
+            binding.infoIpv4.labelPublicV6.visibility = View.GONE
+
             if (ipInfo != null && ipInfo.protocol == IpProtocol.V4 && ipInfo.publicAddress != null && ipInfo.ipStatus != IpStatus.NO_ADDRESS) {
                 binding.infoIpv4.textPublic.text = ipInfo.publicAddress
                 binding.infoIpv4.textPublic.visibility = View.VISIBLE
@@ -163,9 +166,6 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
                 binding.infoIpv4.textPrivate.visibility = View.GONE
                 binding.infoIpv4.labelPrivate.visibility = View.GONE
             }
-
-            binding.infoIpv4.textPublicV6.visibility = View.GONE
-            binding.infoIpv4.labelPublicV6.visibility = View.GONE
             binding.infoIpv4.executePendingBindings()
         }
 
@@ -174,19 +174,28 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
             binding.infoIpv6.textNotAvailable.visibility =
                 if (ipInfo != null && (ipInfo.ipStatus == IpStatus.NO_ADDRESS || ipInfo.ipStatus == IpStatus.NO_INFO)) View.VISIBLE else View.GONE
 
-            if (ipInfo != null && ipInfo.protocol == IpProtocol.V6 && ipInfo.publicAddress != null && ipInfo.ipStatus != IpStatus.NO_ADDRESS) {
-                binding.infoIpv6.textPublicV6.text = ipInfo.publicAddress
-                binding.infoIpv6.textPublicV6.visibility = View.VISIBLE
-                binding.infoIpv6.labelPublicV6.visibility = View.VISIBLE
-            } else {
-                binding.infoIpv6.textPublicV6.visibility = View.GONE
-                binding.infoIpv6.labelPublicV6.visibility = View.GONE
-            }
-
             binding.infoIpv6.textPrivate.visibility = View.GONE
             binding.infoIpv6.labelPrivate.visibility = View.GONE
             binding.infoIpv6.textPublic.visibility = View.GONE
             binding.infoIpv6.labelPublic.visibility = View.GONE
+
+            if (ipInfo != null && ipInfo.protocol == IpProtocol.V6 && ipInfo.publicAddress != null && ipInfo.ipStatus != IpStatus.NO_ADDRESS) {
+                binding.infoIpv6.textPublic.text = ipInfo.publicAddress
+                binding.infoIpv6.textPublic.visibility = View.VISIBLE
+                binding.infoIpv6.labelPublic.visibility = View.VISIBLE
+            } else {
+                binding.infoIpv6.textPublic.visibility = View.GONE
+                binding.infoIpv6.labelPublic.visibility = View.GONE
+            }
+
+            if (ipInfo?.privateAddress != null && ipInfo.ipStatus != IpStatus.NO_ADDRESS && ipInfo.publicAddress != ipInfo.privateAddress) {
+                binding.infoIpv6.textPrivate.text = ipInfo.privateAddress
+                binding.infoIpv6.textPrivate.visibility = View.VISIBLE
+                binding.infoIpv6.labelPrivate.visibility = View.VISIBLE
+            } else {
+                binding.infoIpv6.textPrivate.visibility = View.GONE
+                binding.infoIpv6.labelPrivate.visibility = View.GONE
+            }
         }
     }
 
