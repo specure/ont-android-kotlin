@@ -5,15 +5,27 @@ This repository contains the source code of the new version of the RTR-Netztest 
 The source code is published under [Apache version 2.0 license](https://github.com/rtr-nettest/open-rmbt-android/blob/master/LICENSE).
 
 ### HOW TO BUILD
-
-1. Change app id to preferred one in dependencies.gradle (optional)
-2. Update signing config (optional)
+1. Select module you want to build according to customer (other ones from this set you can unload,
+   keep only one loaded)
+	- __`app`__: RTR Austria
+	- __`ont`__: Open Nettest Global
+	- __`akep`__: AKEP Albania
+	- __`akos`__: AKOS Slovenia
+	- __`nkom`__: NKOM Norway
+2. Change app id to preferred one in dependencies.gradle (optional)
+3. Update signing config (optional)
 	1. Replace signing/debug.keystore with your own one
 	2. Update signing/debug.properties with credentials to your signing/debug.keystore key
 	3. Replace signing/release.keystore with your own one
 	4. Update signing/release.properties with credentials to your signing/release.keystore key
-	5. Enable Google Maps SDK in Google Cloud console and put your API key into `googleMapsApiKey` in flavor-config.gradle file
-3. Add/change endpoints information and `example.com` in file `app/src/rtr/config.json` 
+4. Additional setup
+	1. For `app` customer selectedEnable Google Maps SDK in Google Cloud console and put your API
+	   key into `googleMapsApiKey` in flavor-config.gradle file
+	2. For other than `app` customer to enable MapBox map register and generate key on mapbox.com
+	   and set your key as environmental variable `ORG_GRADLE_PROJECT_MAPBOX_SDK_KEY`
+	3. For other than `app` customer to enable Here map search register and generate key on here.com
+	   and set your key as environmental variable `ORG_GRADLE_PROJECT_HERE_API_KEY`
+5. Add/change endpoints information and `example.com` in file `app/src/rtr/config.json`
 
 ### VARIABLES DESCRIPTION
 ##### CONTROL SERVER VARIABLES
@@ -91,13 +103,30 @@ The source code is published under [Apache version 2.0 license](https://github.c
 - __`CONTROL_SERVER_SEND_QOS_RESULT_ENDPOINT`__ Endpoint to send QoS test results to the control server, default: `resultQoS`
 - __`CONTROL_SERVER_HISTORY_ENDPOINT`__ Endpoint to get test history, default: `history`
 - __`CONTROL_SERVER_GET_BASIC_RESULT_PATH`__ Endpoint to get test results from the control server, default: `testresult`
-- __`CONTROL_SERVER_GET_OPENDATA_RESULT_PATH`__ Endpoint to get open test results from control server, default: `opentests`
-- __`CONTROL_SERVER_TEST_RESULT_DETAILS_ENDPOINT`__ Endpoint to get detailed test results, default: `testresultdetail`
-- __`CONTROL_SERVER_GET_QOS_TEST_RESULT_ENDPOINT`__ Endpoint to get QoS test results, default: `qosTestResult?api=2`
-- __`CONTROL_SERVER_SIGNAL_REQUEST_ROUTE`__ Endpoint to get settings for the continious signal measurement, default: `signalRequest`
-- __`CONTROL_SERVER_SIGNAL_RESULT_ROUTE`__ Endpoint to send chunk of results of continiouse signal measurement, default: `signalResult`
-- __`CONTROL_SERVER_GET_SYNC_CODE_ROUTE`__ Endpoint to get sync code for current device, default: `sync`
-- __`CONTROL_SERVER_SYNC_DEVICES_ROUTE`__ Endpoint to send other device sync code and make devices history synchonised, default `sync` (has different params in api)
+- __`CONTROL_SERVER_GET_OPENDATA_RESULT_PATH`__ Endpoint to get open test results from control
+  server, default: `opentests`
+- __`CONTROL_SERVER_TEST_RESULT_DETAILS_ENDPOINT`__ Endpoint to get detailed test results,
+  default: `testresultdetail`
+- __`CONTROL_SERVER_GET_QOS_TEST_RESULT_ENDPOINT`__ Endpoint to get QoS test results,
+  default: `qosTestResult?api=2`
+- __`CONTROL_SERVER_SIGNAL_REQUEST_ROUTE`__ Endpoint to get settings for the continious signal
+  measurement, default: `signalRequest`
+- __`CONTROL_SERVER_SIGNAL_RESULT_ROUTE`__ Endpoint to send chunk of results of continiouse signal
+  measurement, default: `signalResult`
+- __`CONTROL_SERVER_GET_SYNC_CODE_ROUTE`__ Endpoint to get sync code for current device,
+  default: `sync`
+- __`CONTROL_SERVER_SYNC_DEVICES_ROUTE`__ Endpoint to send other device sync code and make devices
+  history synchonised, default `sync` (has different params in api)
 - __`CONTROL_SERVER_GET_NEWS_ENDPOINT`__ Endpoint to get news, default: `news`
 - __`CONTROL_SERVER_NEW_HOST`__ Host for the updated version of server
 - __`CONTROL_SERVER_NEW_ROUTE`__ Route for the updated version of server
+- __`REQUEST_HEADER_VALUE`__ Request header to differentiate between customers eg. `nt` for `ont`
+  customer. Default is empty.
+- __`RMBT_CLIENT_REQUESTS_PATH_PREFIX`__ Middle part of the request route eg. for
+  route `"sdevv6.example.com/RMBTControlServer/ip"` and value `v2` it will
+  generate `"sdevv6.example.com/RMBTControlServer/v2/ip"`. Default is empty.
+- __`ENABLED_JITTER_AND_PACKET_LOSS`__ Defines if jitter and packet loss test should be executed
+  during basic test - it needs to be supported by ControlServer. Default is `false`.
+- __`CMS_URL`__ Defines URL to CMS system to load web pages regarding terms and conditions, privacy
+  policy, ... Used for other than RTR customer. eg. `"https://cms-api.example.com"`
+
