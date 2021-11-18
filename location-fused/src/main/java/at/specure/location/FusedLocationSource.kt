@@ -1,8 +1,12 @@
 package at.specure.location
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.pm.PackageManager
 import android.location.Location
 import android.os.HandlerThread
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
@@ -15,7 +19,7 @@ private const val LATEST_LOCATION_MAX_AGE_SEC = 30L
 /**
  * Location Source that uses fused location manager and Google Play services
  */
-class FusedLocationSource(context: Context) : LocationSource {
+class FusedLocationSource(val context: Context) : LocationSource {
 
     private val manager = LocationServices.getFusedLocationProviderClient(context)
 
@@ -33,6 +37,16 @@ class FusedLocationSource(context: Context) : LocationSource {
         get() {
             var location: Location? = null
             synchronized(lastLocationMonitor) {
+                if (ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return null
+                }
                 manager.lastLocation.addOnCompleteListener { task ->
                     location = task.result
                     synchronized(lastLocationMonitor) {
@@ -44,7 +58,7 @@ class FusedLocationSource(context: Context) : LocationSource {
                 }
             }
             Timber.e("location update: GET FETCHED SOURCE!")
-            return location?.let { LocationInfo(it) }
+            return location?.let { LocationInfo(context, it) }
         }
 
     private val locationRequest = LocationRequest().apply {
@@ -56,7 +70,7 @@ class FusedLocationSource(context: Context) : LocationSource {
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(result: LocationResult?) {
-            val location = result?.let { LocationInfo(result.lastLocation) }
+            val location = result?.let { LocationInfo(context, result.lastLocation) }
             latestLocation = location
 
             Timber.d("location update: fused location result ${result.toString()}")
@@ -95,10 +109,17 @@ class FusedLocationSource(context: Context) : LocationSource {
                 }
             }
 
-            val task = manager.requestLocationUpdates(locationRequest, locationCallback, handlerThread!!.looper)
+            val task = if (ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    context,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) null else manager.requestLocationUpdates(locationRequest, locationCallback, handlerThread!!.looper)
 
-            if (!task.isSuccessful) {
-                Timber.e(task.exception, "Location updates will not be delivered. Failed requesting fused location updates!")
+            if (task?.isSuccessful != true) {
+                Timber.e(task?.exception, "Location updates will not be delivered. Failed requesting fused location updates!")
             }
         }
     }
