@@ -98,7 +98,12 @@ class DeviceInfo(context: Context, val location: Location? = null) {
         val mock_location: Boolean,
         val satellites: Int?,
         @Expose
-        val altitude: Double
+        val altitude: Double,
+
+        val postalCode: String?,
+        val city: String?,
+        val country: String?,
+        val county: String?
     )
 }
 
@@ -114,6 +119,10 @@ fun LocationInfo?.toDeviceInfoLocation(): DeviceInfo.Location? = if (this == nul
         accuracy = accuracy,
         mock_location = locationIsMocked,
         altitude = altitude,
-        satellites = satellites
+        satellites = satellites,
+        postalCode = postalCode,
+        city = city,
+        country = country,
+        county = county
     )
 }

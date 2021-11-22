@@ -29,5 +29,10 @@ data class GeoLocationRecord(
     val accuracy: Float,
     val bearing: Float,
     val isMocked: Boolean,
-    val satellitesCount: Int
+    val satellitesCount: Int,
+
+    val postalCode: String?,
+    val city: String?,
+    val country: String?,
+    val county: String?
 )

@@ -143,7 +143,11 @@ fun LocationInfo.toRequest() = TestLocationBody(
     accuracy = accuracy,
     mockLocation = locationIsMocked,
     satellites = satellites,
-    bearing = bearing
+    bearing = bearing,
+    postalCode = postalCode,
+    city = city,
+    country = country,
+    county = county
 )
 
 fun TestRecord.toRequest(
@@ -359,7 +363,11 @@ fun GeoLocationRecord.toRequest() = TestLocationBody(
     accuracy = accuracy,
     bearing = bearing,
     mockLocation = isMocked,
-    satellites = satellitesCount
+    satellites = satellitesCount,
+    postalCode = postalCode,
+    city = city,
+    country = country,
+    county = county
 )
 
 fun PingRecord.toRequest() = PingBody(

@@ -778,7 +778,12 @@ data class TestLocationBody(
     val bearing: Float,
     @SerializedName("mock_location")
     val mockLocation: Boolean,
-    val satellites: Int?
+    val satellites: Int?,
+
+    val postalCode: String?,
+    val city: String?,
+    val country: String?,
+    val county: String?
 )
 
 @Keep
