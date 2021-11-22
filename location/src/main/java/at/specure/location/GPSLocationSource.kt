@@ -32,7 +32,7 @@ class GPSLocationSource(val context: Context) : LocationSource {
                 null
             } else {
                 val location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                location?.let { LocationInfo(it) }
+                location?.let { LocationInfo(context, it) }
             }
         } catch (ex: Exception) {
             Timber.e(ex, "Failed to get last known network location")
@@ -42,7 +42,7 @@ class GPSLocationSource(val context: Context) : LocationSource {
     private val locationListener = object : LocationListener {
 
         override fun onLocationChanged(location: Location) {
-            listener?.onLocationChanged(location?.let { LocationInfo(it) })
+            listener?.onLocationChanged(location?.let { LocationInfo(context, it) })
         }
 
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}

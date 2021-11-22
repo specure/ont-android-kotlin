@@ -1,5 +1,8 @@
 package at.specure.location
 
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Build
 import android.os.Bundle
@@ -8,6 +11,8 @@ import at.specure.location.LocationInfo.LocationCardinalDirections.EAST
 import at.specure.location.LocationInfo.LocationCardinalDirections.NORTH
 import at.specure.location.LocationInfo.LocationCardinalDirections.SOUTH
 import at.specure.location.LocationInfo.LocationCardinalDirections.WEST
+import timber.log.Timber
+import java.util.Locale
 
 /**
  * Class suitable to display information for user, information are in human-readable form
@@ -138,7 +143,15 @@ class LocationInfo {
      */
     val time: Long
 
-    constructor(location: Location) {
+    /**
+     * Reverse geocoding results
+     */
+    var postalCode: String? = null
+    var city: String? = null
+    var country: String? = null
+    var county: String? = null
+
+    constructor(context: Context, location: Location) {
         latitudeDirection = assignLatitudeDirection(location.latitude)
         longitudeDirection = assignLongitudeDirection(location.longitude)
 
@@ -179,6 +192,19 @@ class LocationInfo {
         time = location.time
 
         location.time
+
+        var address: Address? = null
+        try {
+            val geocoder = Geocoder(context, Locale.US)
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            address = if (addresses.size > 0) addresses[0] else null
+        } catch (e: Error) {
+            Timber.e(e)
+        }
+        postalCode = address?.postalCode
+        city = address?.locality
+        country = address?.countryName
+        county = address?.adminArea
     }
 
     /**
@@ -218,7 +244,11 @@ class LocationInfo {
         bearingAccuracyDegrees: Float,
         elapsedRealtimeNanos: Long,
         satellitesCount: Int,
-        time: Long
+        time: Long,
+        postalCode: String?,
+        city: String?,
+        country: String?,
+        county: String?
     ) {
         this.latitudeDirection = assignLatitudeDirection(latitude)
         this.longitudeDirection = assignLongitudeDirection(longitude)
@@ -254,6 +284,11 @@ class LocationInfo {
         this.systemMillisTime = System.currentTimeMillis()
 
         this.time = time
+
+        this.postalCode = postalCode
+        this.city = city
+        this.country = country
+        this.county = county
     }
 
     private fun formatSatellites(extras: Bundle?): Int {

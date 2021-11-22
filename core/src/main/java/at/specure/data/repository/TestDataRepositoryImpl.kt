@@ -84,7 +84,11 @@ class TestDataRepositoryImpl(db: CoreDatabase) : TestDataRepository {
             accuracy = location.accuracy,
             bearing = location.bearing,
             satellitesCount = location.satellites ?: 0,
-            isMocked = location.locationIsMocked
+            isMocked = location.locationIsMocked,
+            postalCode = location.postalCode,
+            city = location.city,
+            country = location.country,
+            county = location.county
         )
         geoLocationDao.insert(geoLocation)
     }
