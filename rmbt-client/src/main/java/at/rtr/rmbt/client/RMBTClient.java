@@ -124,6 +124,8 @@ public class RMBTClient implements RMBTClientCallback {
 
     private String errorMsg = "";
 
+    private String headerValue = null;
+
     public RMBTClientCallback commonCallback = null;
     
     
@@ -169,15 +171,16 @@ public class RMBTClient implements RMBTClientCallback {
 
 
     RMBTClient(final RMBTTestParameter params, final ControlServerConnection controlConnection) {
-        this(params, controlConnection, null, false);
+        this(params, controlConnection, null, false, null);
     }
 
-    RMBTClient(final RMBTTestParameter params, final ControlServerConnection controlConnection, File cacheDir, boolean enabledJitterAndPacketLoss) {
+    RMBTClient(final RMBTTestParameter params, final ControlServerConnection controlConnection, File cacheDir, boolean enabledJitterAndPacketLoss, String headerValue) {
         this.params = params;
         this.controlConnection = controlConnection;
         this.cacheDir = cacheDir;
         this.enabledJitterAndPacketLoss = enabledJitterAndPacketLoss;
         this.jitterTestDurationNanos.set(10000000000L); // set default value
+        this.headerValue = headerValue;
         planInactivityCheck();
 
         params.check();
@@ -274,7 +277,7 @@ public class RMBTClient implements RMBTClientCallback {
 
         final RMBTTestParameter params = controlConnection.getTestParameter(overrideParams);
 
-        return new RMBTClient(params, controlConnection, cacheDir, enabledJitterAndPacketLoss);
+        return new RMBTClient(params, controlConnection, cacheDir, enabledJitterAndPacketLoss, headerValue);
     }
 
     public boolean isEnabledJitterAndPacketLossTest() {
@@ -757,8 +760,6 @@ public class RMBTClient implements RMBTClientCallback {
         return maxTime == 0f ? 0f : (float) sumTrans / (float) maxTime * 1e9f * 8.0f;
     }
 
-    final Map<Integer, List<SpeedItem>> speedMap = new HashMap<Integer, List<SpeedItem>>();
-
     private float getAvgSpeed() {
         long sumDiffTrans = 0;
         long maxDiffTime = 0;
@@ -780,14 +781,6 @@ public class RMBTClient implements RMBTClientCallback {
                 lastTransfer[i][currentIndex] = currentSpeed.trans;
 
 //                System.out.println("T" + i + ": " + currentSpeed);
-
-                List<SpeedItem> speedList = speedMap.get(i);
-                if (speedList == null) {
-                    speedList = new ArrayList<SpeedItem>();
-                    speedMap.put(i, speedList);
-                }
-
-                speedList.add(new SpeedItem(false, i, currentSpeed.time, currentSpeed.trans));
 
                 final long diffTime = currentSpeed.time - lastTime[i][diffReferenceIndex];
                 final long diffTrans = currentSpeed.trans - lastTransfer[i][diffReferenceIndex];
@@ -844,7 +837,11 @@ public class RMBTClient implements RMBTClientCallback {
 
             case DOWN:
                 iResult.progress = (float) diffTime / durationDownNano;
-                downBitPerSec.set(Math.round(getAvgSpeed()));
+                if (isOntAdaptationEnabled()) {
+                    downBitPerSec.set(Math.round(getTotalSpeed()));
+                } else {
+                    downBitPerSec.set(Math.round(getAvgSpeed()));
+                }
                 break;
 
             case INIT_UP:
@@ -853,7 +850,11 @@ public class RMBTClient implements RMBTClientCallback {
 
             case UP:
                 iResult.progress = (float) diffTime / durationUpNano;
-                upBitPerSec.set(Math.round(getAvgSpeed()));
+                if (isOntAdaptationEnabled()) {
+                    upBitPerSec.set(Math.round(getTotalSpeed()));
+                } else {
+                    upBitPerSec.set(Math.round(getAvgSpeed()));
+                }
                 break;
 
             case SPEEDTEST_END:
@@ -1083,6 +1084,10 @@ public class RMBTClient implements RMBTClientCallback {
      */
     public List<TaskDesc> getTaskDescList() {
         return taskDescList;
+    }
+
+    public boolean isOntAdaptationEnabled() {
+        return headerValue != null;
     }
 
     @Override

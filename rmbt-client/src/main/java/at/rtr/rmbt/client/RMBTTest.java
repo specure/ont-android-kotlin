@@ -66,6 +66,9 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
     private final int maxCoarseResults;
     private final int maxFineResults;
 
+    public static boolean downloadContinue = true;
+    public static boolean uploadContinue = true;
+
     private class SingleResult {
         private final Results fine;
         private final Results coarse;
@@ -562,6 +565,7 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
     }
 
     private void downloadChunks(final int chunks) throws InterruptedException, IOException {
+        downloadContinue = true;
         if (Thread.interrupted())
             throw new InterruptedException();
 
@@ -653,6 +657,9 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
             if (Thread.interrupted())
                 throw new InterruptedException();
             read = in.read(buf);
+            if (!downloadContinue) {
+                break;
+            }
             if (read > 0) {
                 final int posLast = chunksize - 1 - (int) (totalRead % chunksize);
                 if (read > posLast)
@@ -660,14 +667,17 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
                 totalRead += read;
 
                 final long nsec = System.nanoTime() - timeStart;
-
+                if (!downloadContinue) {
+                    break;
+                }
                 result.addResult(totalRead, nsec);
                 curTransfer.set(totalRead);
                 curTime.set(nsec);
             }
         }
-        while (read > 0 && lastByte != (byte) 0xff && System.nanoTime() <= timeLatestEnd);
+        while (read > 0 && lastByte != (byte) 0xff && System.nanoTime() <= timeLatestEnd && downloadContinue);
 
+        downloadContinue = false;
         final long timeEnd = System.nanoTime();
 
         if (read <= 0) {
@@ -699,6 +709,7 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
     }
 
     private void uploadChunks(final int chunks) throws InterruptedException, IOException {
+        uploadContinue = true;
         if (Thread.interrupted())
             throw new InterruptedException();
 
@@ -808,7 +819,7 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
                         }
 
                         final MatchResult match = s.match();
-                        if (match.groupCount() == 2) {
+                        if (match.groupCount() == 2 && (uploadContinue)) {
                             final long nsec = Long.parseLong(match.group(1));
                             final long bytes = Long.parseLong(match.group(2));
                             result.addResult(bytes, nsec);
@@ -816,12 +827,16 @@ public class RMBTTest extends AbstractRMBTTest implements Callable<ThreadTestRes
                             curTime.set(nsec);
                         }
 
-                        if (terminateRxAtAllEvents.get())
+                        if (terminateRxAtAllEvents.get() || (!uploadContinue)) {
                             terminate = true;
-                        if (terminateRxIfEnough.get() && curTime.get() > enoughTime)
+                            uploadContinue = false;
+                        }
+                        if (terminateRxIfEnough.get() && curTime.get() > enoughTime || (!uploadContinue)) {
                             terminate = true;
+                            uploadContinue = false;
+                        }
                     }
-                    while (!terminate);
+                    while (!terminate && uploadContinue);
                     return true;
                 } finally {
                     s.close();
