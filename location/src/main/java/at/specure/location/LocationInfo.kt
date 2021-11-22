@@ -1,6 +1,7 @@
 package at.specure.location
 
 import android.content.Context
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Build
@@ -10,7 +11,8 @@ import at.specure.location.LocationInfo.LocationCardinalDirections.EAST
 import at.specure.location.LocationInfo.LocationCardinalDirections.NORTH
 import at.specure.location.LocationInfo.LocationCardinalDirections.SOUTH
 import at.specure.location.LocationInfo.LocationCardinalDirections.WEST
-import java.util.*
+import timber.log.Timber
+import java.util.Locale
 
 /**
  * Class suitable to display information for user, information are in human-readable form
@@ -191,9 +193,14 @@ class LocationInfo {
 
         location.time
 
-        val geocoder = Geocoder(context, Locale.US)
-        val addresses = geocoder.getFromLocation(latitude, longitude, 1)
-        val address = if (addresses.size > 0) addresses[0] else null
+        var address: Address? = null
+        try {
+            val geocoder = Geocoder(context, Locale.US)
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            address = if (addresses.size > 0) addresses[0] else null
+        } catch (e: Error) {
+            Timber.e(e)
+        }
         postalCode = address?.postalCode
         city = address?.locality
         country = address?.countryName
