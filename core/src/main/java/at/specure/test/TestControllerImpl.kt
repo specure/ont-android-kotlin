@@ -281,8 +281,8 @@ class TestControllerImpl(
                     TestStatus.PACKET_LOSS_AND_JITTER -> handleJitterAndPacketLoss(client)
                     TestStatus.INIT_UP -> handleInitUp()
                     TestStatus.UP -> handleUp(client)
-                    TestStatus.SPEEDTEST_END -> handleSpeedTestEnd(skipQoSTests)
-                    TestStatus.QOS_TEST_RUNNING -> handleQoSRunning(qosTest)
+                    TestStatus.SPEEDTEST_END -> handleSpeedTestEnd(client, skipQoSTests)
+                    TestStatus.QOS_TEST_RUNNING -> handleQoSRunning(client, qosTest)
                     TestStatus.QOS_END -> handleQoSEnd()
                     TestStatus.ERROR -> handleError(client)
                     TestStatus.END -> handleEnd()
@@ -396,9 +396,12 @@ class TestControllerImpl(
 
     private fun handleUp(client: RMBTClient) {
         client.getIntermediateResult(result)
-        val progress = (result.progress * 100).toInt()
+        var progress = (result.progress * 100).toInt()
+        if (progress == 100) {
+            progress = 99
+        }
         if (progress != previousUploadProgress) {
-            setState(MeasurementState.UPLOAD, (result.progress * 100).toInt())
+            setState(MeasurementState.UPLOAD, progress)
             if (result.pingNano > 0) {
                 _listener?.onPingChanged(result.pingNano)
             }
@@ -416,56 +419,68 @@ class TestControllerImpl(
         }
     }
 
-    private fun handleSpeedTestEnd(skipQoSTest: Boolean) {
+    private suspend fun handleSpeedTestEnd(client: RMBTClient, skipQoSTest: Boolean) {
         if (skipQoSTest) {
+            client.getIntermediateResult(result)
+            setState(MeasurementState.UPLOAD, 100)
+            val speed = floor(client.totalTestResult.speed_upload + 0.5).toLong() * 1000
+            _listener?.onUploadSpeedChanged(100, speed)
+            delay(1000)
             setState(MeasurementState.FINISH, 0)
         }
     }
 
-    private fun handleQoSRunning(qosTest: QualityOfServiceTest?) {
+    private fun handleQoSRunning(client: RMBTClient, qosTest: QualityOfServiceTest?) {
         qosTest ?: return
         Timber.i("${TestStatus.QOS_TEST_RUNNING} progress: ${qosTest.progress}/${qosTest.testSize}")
         val progress = ((qosTest.progress.toDouble() / qosTest.testSize) * 100).toInt()
-        setState(MeasurementState.QOS, progress)
+        if (progress < 1) {
+            // keep showing upload result
+            setState(MeasurementState.UPLOAD, 100)
+            val speed = floor(client.totalTestResult.speed_upload + 0.5).toLong() * 1000
+            _listener?.onUploadSpeedChanged(100, speed)
+        } else {
+            setState(MeasurementState.QOS, progress)
 
-        val counterMap = qosTest.testGroupCounterMap
-        val testMap = qosTest.testMap
+            val counterMap = qosTest.testGroupCounterMap
+            val testMap = qosTest.testMap
 
-        val progressMap = mutableMapOf<QoSTestResultEnum, Int>()
+            val progressMap = mutableMapOf<QoSTestResultEnum, Int>()
 
-        counterMap.forEach { entry ->
-            val key = entry.key!!
-            val counter = entry.value!!
+            counterMap.forEach { entry ->
+                val key = entry.key!!
+                val counter = entry.value!!
 
-            var testGroupProgress = 0f
-            val currentTimestamp = System.nanoTime()
+                var testGroupProgress = 0f
+                val currentTimestamp = System.nanoTime()
 
-            val taskList = testMap[key]
-            if (taskList != null && counter.value < counter.target) {
-                taskList.forEach { task ->
-                    if (task.hasStarted()) {
-                        val runningMs = TimeUnit.NANOSECONDS.toMillis(task.getRelativeDurationNs(currentTimestamp))
-                        if (runningMs >= TEST_MAX_TIME * MAX_VALUE_UNFINISHED_TEST && !task.hasFinished()) {
-                            testGroupProgress += (1f / counter.target) * MAX_VALUE_UNFINISHED_TEST
-                        } else if (!task.hasFinished()) {
-                            testGroupProgress += (1f / counter.target) * (runningMs / TEST_MAX_TIME)
+                val taskList = testMap[key]
+                if (taskList != null && counter.value < counter.target) {
+                    taskList.forEach { task ->
+                        if (task.hasStarted()) {
+                            val runningMs = TimeUnit.NANOSECONDS.toMillis(task.getRelativeDurationNs(currentTimestamp))
+                            if (runningMs >= TEST_MAX_TIME * MAX_VALUE_UNFINISHED_TEST && !task.hasFinished()) {
+                                testGroupProgress += (1f / counter.target) * MAX_VALUE_UNFINISHED_TEST
+                            } else if (!task.hasFinished()) {
+                                testGroupProgress += (1f / counter.target) * (runningMs / TEST_MAX_TIME)
+                            }
                         }
                     }
+
+                    testGroupProgress += counter.value.toFloat() / counter.target
+                    testGroupProgress *= 100f
+                } else if (counter.value == counter.target) {
+                    testGroupProgress = 100f
+                } else {
+                    Timber.w("Task $key not found!")
                 }
 
-                testGroupProgress += counter.value.toFloat() / counter.target
-                testGroupProgress *= 100f
-            } else if (counter.value == counter.target) {
-                testGroupProgress = 100f
-            } else {
-                Timber.w("Task $key not found!")
+                progressMap[key] = testGroupProgress.toInt()
+                Timber.i("$key : $testGroupProgress")
             }
 
-            progressMap[key] = testGroupProgress.toInt()
-            Timber.i("$key : $testGroupProgress")
+            _listener?.onQoSTestProgressUpdate(qosTest.progress, qosTest.testSize, progressMap)
         }
-
-        _listener?.onQoSTestProgressUpdate(qosTest.progress, qosTest.testSize, progressMap)
     }
 
     private fun checkIllegalNetworkChange(client: RMBTClient) {
