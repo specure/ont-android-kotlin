@@ -12,6 +12,7 @@ import at.specure.location.LocationInfo.LocationCardinalDirections.NORTH
 import at.specure.location.LocationInfo.LocationCardinalDirections.SOUTH
 import at.specure.location.LocationInfo.LocationCardinalDirections.WEST
 import timber.log.Timber
+import java.lang.Exception
 import java.util.Locale
 
 /**
@@ -198,7 +199,7 @@ class LocationInfo {
             val geocoder = Geocoder(context, Locale.US)
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             address = if (addresses.size > 0) addresses[0] else null
-        } catch (e: Error) {
+        } catch (e: Exception) {
             Timber.e(e)
         }
         postalCode = address?.postalCode
