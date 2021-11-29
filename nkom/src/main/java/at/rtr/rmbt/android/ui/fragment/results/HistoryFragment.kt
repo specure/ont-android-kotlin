@@ -52,24 +52,6 @@ class HistoryFragment : BaseFragment() {
             binding.recyclerViewHistoryItems.addItemDecoration(itemDecoration)
         }
 
-//        binding.recyclerViewHistoryItems.addOnScrollListener(object : OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                val visibleItemCount = binding.recyclerViewHistoryItems.childCount
-//                val totalItemCount = binding.recyclerViewHistoryItems.layoutManager?.itemCount
-//                val layoutManager = (binding.recyclerViewHistoryItems.layoutManager as LinearLayoutManager)
-//                val firstVisibleItem = layoutManager.findFirstCompletelyVisibleItemPosition()
-//                val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
-//                Timber.d("History FVI: $firstVisibleItem LVI: $lastVisibleItem TIC: $totalItemCount VIC: $visibleItemCount")
-//                if (lastVisibleItem + 1 == totalItemCount) {
-//                    historyViewModel.loadMoreItems()
-//                }
-//                if (firstVisibleItem == 0) {
-//                    historyViewModel.loadPreviousItems()
-//                }
-//            }
-//        })
-
         historyViewModel.historyLiveData.listen(this) {
             binding.swipeRefreshLayoutHistoryItems.isRefreshing = false
             historyViewModel.state.isHistoryEmpty.set(it.isEmpty())

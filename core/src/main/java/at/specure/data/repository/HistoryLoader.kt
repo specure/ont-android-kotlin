@@ -6,6 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import at.rmbt.util.exception.HandledException
 import at.rmbt.util.io
+import at.specure.config.Config
 import at.specure.data.CoreDatabase
 import at.specure.data.entity.HistoryContainer
 import kotlinx.coroutines.channels.Channel
@@ -17,11 +18,12 @@ private const val LIMIT = 100
 
 class HistoryLoader @Inject constructor(
     db: CoreDatabase,
+    private val config: Config,
     private val historyRepository: HistoryRepository
 ) :
     PagedList.BoundaryCallback<HistoryContainer>() {
 
-    var latestLoadedPage = 1
+    var latestLoadedPage = if (isONTBasedApp()) 1 else 0
     var totalPagesCount = 1 // bigger than latestLoadedPage to have first load
     var isLoadingChannel: Channel<Boolean>? = null
     var errorChannel: Channel<HandledException>? = null
@@ -50,12 +52,20 @@ class HistoryLoader @Inject constructor(
 
     override fun onZeroItemsLoaded() {
         super.onZeroItemsLoaded()
-        loadPreviousItems()
+        if (isONTBasedApp()) {
+            loadPreviousItems()
+        } else {
+            loadItems()
+        }
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: HistoryContainer) {
         super.onItemAtEndLoaded(itemAtEnd)
-        loadNextItems()
+        if (isONTBasedApp()) {
+            loadNextItems()
+        } else {
+            loadItems()
+        }
     }
 
     @Synchronized
@@ -75,6 +85,26 @@ class HistoryLoader @Inject constructor(
                     this@HistoryLoader.latestLoadedPage = (it.currentPage ?: 0) + 1 // number of first page is 0, but we must ask 1 based position of page
                     this@HistoryLoader.totalPagesCount = it.totalPages ?: 1
                     Timber.d("HISTORY: loaded with params latestLoadedPage: ${this@HistoryLoader.latestLoadedPage} ${it.currentPage} and totalPages: ${this@HistoryLoader.totalPagesCount} ${it.totalPages}")
+                }
+            }
+            isLoading = false
+        }
+    }
+
+    @Synchronized
+    private fun loadItems() = io {
+        if (!isLoading) {
+            isLoading = true
+
+            val count = historyDao.getItemsCount()
+            Timber.d("HistoryItemsCount: $count")
+            if ((count % LIMIT == 0) && (count / LIMIT != latestLoadedPage)) {
+                val result = historyRepository.loadHistoryItems(count, LIMIT)
+                result.onFailure {
+                    errorChannel?.send(it)
+                }
+                result.onSuccess {
+                    latestLoadedPage = count / LIMIT
                 }
             }
             isLoading = false
@@ -108,15 +138,27 @@ class HistoryLoader @Inject constructor(
     fun refresh() = io {
         isLoading = true
         // for first page we need to make offset to be == LIMIT to ask for page number 1
-        val result = historyRepository.loadHistoryItems(LIMIT, LIMIT)
+        val result = if (isONTBasedApp()) {
+            historyRepository.loadHistoryItems(LIMIT, LIMIT)
+        } else {
+            historyRepository.loadHistoryItems(0, LIMIT)
+        }
         result.onFailure {
             errorChannel?.send(it)
         }
         result.onSuccess {
-            this@HistoryLoader.latestLoadedPage = (it.currentPage ?: 0) + 1 // number of first page is 0, but we must ask 1 based position of page
-            this@HistoryLoader.totalPagesCount = it.totalPages ?: 1
-            Timber.d("HISTORY refresh: loaded with params latestLoadedPage: ${this@HistoryLoader.latestLoadedPage} ${it.currentPage} and totalPages: ${this@HistoryLoader.totalPagesCount} ${it.totalPages}")
+            if (isONTBasedApp()) {
+                this@HistoryLoader.latestLoadedPage = (it.currentPage ?: 0) + 1 // number of first page is 0, but we must ask 1 based position of page
+                this@HistoryLoader.totalPagesCount = it.totalPages ?: 1
+                Timber.d("HISTORY refresh: loaded with params latestLoadedPage: ${this@HistoryLoader.latestLoadedPage} ${it.currentPage} and totalPages: ${this@HistoryLoader.totalPagesCount} ${it.totalPages}")
+            } else {
+                latestLoadedPage = 0
+            }
         }
         isLoading = false
+    }
+
+    private fun isONTBasedApp(): Boolean {
+        return config.headerValue.isNotEmpty()
     }
 }
