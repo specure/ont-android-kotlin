@@ -596,7 +596,7 @@ data class HistoryResponse(
 
 @Keep
 data class HistoryONTResponse(
-    val history: HistoryContent?,
+    val history: HistoryContent?
 ) : BaseResponse()
 
 @Keep
