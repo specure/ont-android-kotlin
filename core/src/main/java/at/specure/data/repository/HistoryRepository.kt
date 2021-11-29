@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import at.rmbt.util.Maybe
 import at.specure.data.HistoryLoopMedian
 import at.specure.data.entity.History
+import at.specure.data.entity.HistoryPage
 import at.specure.util.StringSetPreferenceLiveData
 import kotlinx.coroutines.flow.Flow
 
@@ -31,9 +32,9 @@ interface HistoryRepository {
 
     fun getDevices(): Set<String>?
 
-    fun loadHistoryItems(offset: Int, limit: Int): Maybe<List<History>>
+    fun loadHistoryItems(offset: Int, limit: Int): Maybe<HistoryPage>
 
-    fun loadHistoryItems(offset: Int, limit: Int, ignoreFilters: Boolean): Maybe<List<History>>
+    fun loadHistoryItems(offset: Int, limit: Int, ignoreFilters: Boolean): Maybe<HistoryPage>
 
     fun loadLoopHistoryItems(loopUuid: String): Flow<List<History>?>
 

@@ -603,8 +603,8 @@ data class HistoryONTResponse(
 data class HistoryContent(
     @SerializedName("content")
     val historyList: List<HistoryItemONTResponse>?,
-    val size: Long,
-    val number: Long
+    val totalPages: Int?,
+    val number: Int?
 ) : BaseResponse()
 
 @Keep

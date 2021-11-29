@@ -26,6 +26,7 @@ import at.rmbt.client.control.TestResultDetailItem
 import at.rmbt.client.control.TestResultDetailResponse
 import at.rmbt.client.control.data.MapFilterType
 import at.specure.data.entity.History
+import at.specure.data.entity.HistoryPage
 import at.specure.data.entity.MarkerMeasurementRecord
 import at.specure.data.entity.QoeInfoRecord
 import at.specure.data.entity.QosCategoryRecord
@@ -44,6 +45,9 @@ import java.util.Locale
 import java.util.Date
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
+
+fun HistoryResponse.toHistoryPage(): HistoryPage =
+    HistoryPage(totalPages = 0, currentPage = 0, historyItems = this.history?.map { it.toModel() } ?: emptyList())
 
 fun HistoryResponse.toModelList(): List<History> = history?.map { it.toModel() } ?: emptyList()
 
@@ -77,6 +81,13 @@ fun HistoryItemResponse.toModel() = History(
 
 fun HistoryONTResponse.toModelList(): List<History> =
     history?.historyList?.map { it.toModel() } ?: emptyList()
+
+fun HistoryONTResponse.toHistoryPage(): HistoryPage =
+    HistoryPage(
+        totalPages = this.history?.totalPages,
+        currentPage = this.history?.number,
+        historyItems = history?.historyList?.map { it.toModel() } ?: emptyList()
+    )
 
 fun HistoryItemONTResponse.toModel(): History {
     val dateTime = DateTime(measurementDate)
