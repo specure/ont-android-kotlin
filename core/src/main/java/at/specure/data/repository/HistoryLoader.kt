@@ -21,7 +21,8 @@ class HistoryLoader @Inject constructor(
 ) :
     PagedList.BoundaryCallback<HistoryContainer>() {
 
-    var latestLoadedPage = 0
+    var latestLoadedPage = 1
+    var totalPagesCount = 1 // bigger than latestLoadedPage to have first load
     var isLoadingChannel: Channel<Boolean>? = null
     var errorChannel: Channel<HandledException>? = null
 
@@ -49,28 +50,31 @@ class HistoryLoader @Inject constructor(
 
     override fun onZeroItemsLoaded() {
         super.onZeroItemsLoaded()
-        loadItems()
+        loadPreviousItems()
     }
 
     override fun onItemAtEndLoaded(itemAtEnd: HistoryContainer) {
         super.onItemAtEndLoaded(itemAtEnd)
-        loadItems()
+        loadNextItems()
     }
 
     @Synchronized
-    private fun loadItems() = io {
+    private fun loadItems(pageToLoad: Int, totalPagesCount: Int) = io {
         if (!isLoading) {
             isLoading = true
 
             val count = historyDao.getItemsCount()
             Timber.d("HistoryItemsCount: $count")
-            if ((count % LIMIT == 0) && (count / LIMIT != latestLoadedPage)) {
-                val result = historyRepository.loadHistoryItems(count, LIMIT)
+            if (pageToLoad <= totalPagesCount) {
+                val result = historyRepository.loadHistoryItems(pageToLoad * LIMIT, LIMIT)
+                Timber.d("HISTORY: loading with params latestLoadedPage: $latestLoadedPage and totalPages: $totalPagesCount")
                 result.onFailure {
                     errorChannel?.send(it)
                 }
                 result.onSuccess {
-                    latestLoadedPage = count / LIMIT
+                    this@HistoryLoader.latestLoadedPage = (it.currentPage ?: 0) + 1 // number of first page is 0, but we must ask 1 based position of page
+                    this@HistoryLoader.totalPagesCount = it.totalPages ?: 1
+                    Timber.d("HISTORY: loaded with params latestLoadedPage: ${this@HistoryLoader.latestLoadedPage} ${it.currentPage} and totalPages: ${this@HistoryLoader.totalPagesCount} ${it.totalPages}")
                 }
             }
             isLoading = false
@@ -81,10 +85,37 @@ class HistoryLoader @Inject constructor(
         historyDao.clear()
     }
 
+    fun loadNextItems() {
+        if (!isLoading) {
+            if (latestLoadedPage < totalPagesCount) {
+                latestLoadedPage += 1
+                Timber.d("$this HISTORY latestLoadedPage: current item to be loaded before loading: latestLoadedPage: $latestLoadedPage and totalPages: $totalPagesCount is loading?: $isLoading")
+                loadItems(latestLoadedPage, totalPagesCount)
+            }
+        }
+    }
+
+    fun loadPreviousItems() {
+        if (!isLoading) {
+            if (latestLoadedPage > 1) {
+                latestLoadedPage -= 1
+                Timber.d("$this HISTORY loadPreviousItems: current item to be loaded before loading: latestLoadedPage: $latestLoadedPage and totalPages: $totalPagesCount is loading?: $isLoading")
+                loadItems(latestLoadedPage, totalPagesCount)
+            }
+        }
+    }
+
     fun refresh() = io {
         isLoading = true
-        historyRepository.loadHistoryItems(0, LIMIT).onFailure {
+        // for first page we need to make offset to be == LIMIT to ask for page number 1
+        val result = historyRepository.loadHistoryItems(LIMIT, LIMIT)
+        result.onFailure {
             errorChannel?.send(it)
+        }
+        result.onSuccess {
+            this@HistoryLoader.latestLoadedPage = (it.currentPage ?: 0) + 1 // number of first page is 0, but we must ask 1 based position of page
+            this@HistoryLoader.totalPagesCount = it.totalPages ?: 1
+            Timber.d("HISTORY refresh: loaded with params latestLoadedPage: ${this@HistoryLoader.latestLoadedPage} ${it.currentPage} and totalPages: ${this@HistoryLoader.totalPagesCount} ${it.totalPages}")
         }
         isLoading = false
     }

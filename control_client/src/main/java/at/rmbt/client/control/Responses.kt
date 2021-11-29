@@ -596,15 +596,15 @@ data class HistoryResponse(
 
 @Keep
 data class HistoryONTResponse(
-    val history: HistoryContent?
+    val history: HistoryContent?,
 ) : BaseResponse()
 
 @Keep
 data class HistoryContent(
     @SerializedName("content")
     val historyList: List<HistoryItemONTResponse>?,
-    val size: Long,
-    val number: Long
+    val totalPages: Int?,
+    val number: Int?
 ) : BaseResponse()
 
 @Keep

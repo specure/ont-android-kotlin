@@ -5,6 +5,9 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.databinding.FragmentHistoryBinding
 import at.rtr.rmbt.android.di.viewModelLazy
@@ -17,6 +20,7 @@ import at.rtr.rmbt.android.viewmodel.HistoryViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
+import timber.log.Timber
 
 class HistoryFragment : BaseFragment() {
 
@@ -48,11 +52,35 @@ class HistoryFragment : BaseFragment() {
             binding.recyclerViewHistoryItems.addItemDecoration(itemDecoration)
         }
 
+//        binding.recyclerViewHistoryItems.addOnScrollListener(object : OnScrollListener() {
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                val visibleItemCount = binding.recyclerViewHistoryItems.childCount
+//                val totalItemCount = binding.recyclerViewHistoryItems.layoutManager?.itemCount
+//                val layoutManager = (binding.recyclerViewHistoryItems.layoutManager as LinearLayoutManager)
+//                val firstVisibleItem = layoutManager.findFirstCompletelyVisibleItemPosition()
+//                val lastVisibleItem = layoutManager.findLastCompletelyVisibleItemPosition()
+//                Timber.d("History FVI: $firstVisibleItem LVI: $lastVisibleItem TIC: $totalItemCount VIC: $visibleItemCount")
+//                if (lastVisibleItem + 1 == totalItemCount) {
+//                    historyViewModel.loadMoreItems()
+//                }
+//                if (firstVisibleItem == 0) {
+//                    historyViewModel.loadPreviousItems()
+//                }
+//            }
+//        })
+
         historyViewModel.historyLiveData.listen(this) {
             binding.swipeRefreshLayoutHistoryItems.isRefreshing = false
             historyViewModel.state.isHistoryEmpty.set(it.isEmpty())
             (parentFragment as? ResultsFragment)?.onDataLoaded(it.isEmpty())
-            adapter.submitList(it)
+            adapter.submitList(it) {
+                val layoutManager = (binding.recyclerViewHistoryItems.layoutManager as LinearLayoutManager)
+                val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+                if (position != RecyclerView.NO_POSITION) {
+                    binding.recyclerViewHistoryItems.scrollToPosition(position)
+                }
+            }
         }
 
         binding.swipeRefreshLayoutHistoryItems.setOnRefreshListener {

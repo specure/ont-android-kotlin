@@ -15,9 +15,10 @@ import at.specure.data.dao.HistoryDao
 import at.specure.data.dao.HistoryMedianDao
 import at.specure.data.dao.QoeInfoDao
 import at.specure.data.entity.History
+import at.specure.data.entity.HistoryPage
 import at.specure.data.entity.QoeInfoRecord
 import at.specure.data.toCapabilitiesBody
-import at.specure.data.toModelList
+import at.specure.data.toHistoryPage
 import at.specure.result.QoECategory
 import at.specure.util.extractFloatValue
 import kotlinx.coroutines.flow.Flow
@@ -49,16 +50,16 @@ class HistoryRepositoryImpl(
         offset: Int,
         limit: Int,
         ignoreFilters: Boolean
-    ): Maybe<List<History>> {
+    ): Maybe<HistoryPage> {
         val clientUUID = clientUUID.value
         if (clientUUID == null) {
             Timber.w("Unable to update history client uuid is null")
-            return Maybe(emptyList())
+            return Maybe(HistoryPage(emptyList(), 0, 0))
         }
 
         val useONTApiVersion = config.headerValue.isNotEmpty()
         return if (useONTApiVersion) {
-            loadHistoryONT(clientUUID, offset, limit, ignoreFilters)
+            loadHistoryONT("2a940695-78ce-471c-8ce9-f3144aa08a43", offset, limit, ignoreFilters)
         } else {
             loadHistoryRTR(clientUUID, offset, limit, ignoreFilters)
         }
@@ -69,7 +70,7 @@ class HistoryRepositoryImpl(
         offset: Int,
         limit: Int,
         ignoreFilters: Boolean
-    ): Maybe<List<History>> {
+    ): Maybe<HistoryPage> {
         val body = HistoryRequestBody(
             clientUUID = clientUUID,
             offset = offset,
@@ -82,14 +83,14 @@ class HistoryRepositoryImpl(
         val response = client.getHistory(body)
 
         return response.map {
-            val items = it.toModelList()
+            val page = it.toHistoryPage()
             if (offset == 0) {
                 settingsRepository.refreshSettings()
                 historyDao.clear()
             }
-            historyDao.insert(items)
+            historyDao.insert(page.historyItems)
             Timber.i("history offset: $offset limit: $limit loaded: ${it.history?.size}")
-            items
+            page
         }
     }
 
@@ -98,7 +99,7 @@ class HistoryRepositoryImpl(
         offset: Int,
         limit: Int,
         ignoreFilters: Boolean
-    ): Maybe<List<History>> {
+    ): Maybe<HistoryPage> {
         val body = HistoryONTRequestBody(
             clientUUID = clientUUID,
             page = (offset / limit).toLong(),
@@ -108,14 +109,14 @@ class HistoryRepositoryImpl(
         )
         val response = client.getHistoryONT(body, limit.toLong(), (offset / limit).toLong())
         return response.map {
-            val items = it.toModelList()
+            val page = it.toHistoryPage()
             if (offset == 0) {
                 settingsRepository.refreshSettings()
                 historyDao.clear()
             }
-            historyDao.insert(items)
+            historyDao.insert(page.historyItems)
             val loopMeasurementsMap = mutableMapOf<String, MutableList<History>?>()
-            items.forEach { historyItem ->
+            page.historyItems.forEach { historyItem ->
                 if (historyItem.loopUUID != null) {
                     var currentList: MutableList<History>? = loopMeasurementsMap[historyItem.loopUUID]
                     if (currentList == null) {
@@ -129,11 +130,11 @@ class HistoryRepositoryImpl(
                 extractLoopMedianValues(loopList.value, loopList.key)
             }
             Timber.i("history offset: $offset limit: $limit loaded: ${it.history?.historyList?.size}")
-            items
+            page
         }
     }
 
-    override fun loadHistoryItems(offset: Int, limit: Int): Maybe<List<History>> {
+    override fun loadHistoryItems(offset: Int, limit: Int): Maybe<HistoryPage> {
         return loadHistoryItems(offset, limit, false)
     }
 

@@ -59,6 +59,14 @@ class HistoryViewModel @Inject constructor(private val repository: HistoryReposi
         loader.refresh()
     }
 
+    fun loadMoreItems() {
+        loader.loadNextItems()
+    }
+
+    fun loadPreviousItems() {
+        loader.loadPreviousItems()
+    }
+
     fun removeFromFilters(value: String) {
         repository.removeFromFilters(value)
         refreshHistory()
