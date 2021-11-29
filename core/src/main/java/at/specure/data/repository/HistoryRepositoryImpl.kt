@@ -59,7 +59,7 @@ class HistoryRepositoryImpl(
 
         val useONTApiVersion = config.headerValue.isNotEmpty()
         return if (useONTApiVersion) {
-            loadHistoryONT("2a940695-78ce-471c-8ce9-f3144aa08a43", offset, limit, ignoreFilters)
+            loadHistoryONT(clientUUID, offset, limit, ignoreFilters)
         } else {
             loadHistoryRTR(clientUUID, offset, limit, ignoreFilters)
         }
