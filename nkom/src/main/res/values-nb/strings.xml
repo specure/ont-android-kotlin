@@ -44,12 +44,12 @@
     <!-- Error dialog messages -->
     <string name="dialog_title_error">Feil</string>
     <string name="error_unknown">Dårlig tilkobling. Prøv igjen senere</string>
-    <string name="no_internet_connection_not_load_data">Ingen Internettilkobling. Kunne ikke laste inn data.</string>
+    <string name="no_internet_connection_not_load_data">Ingen internettilkobling. Kunne ikke laste inn data.</string>
     <string name="request_failure">Det oppstod en feil under henting av dataene.</string>
 
     <!-- Home screen -->
     <string name="home_attention">Merk følgende</string>
-    <string name="home_no_internet_connection">Ingen Internettilkobling</string>
+    <string name="home_no_internet_connection">Ingen internettilkobling</string>
     <string name="home_no_internet_connection_details">Testing er ikke mulig</string>
     <string name="home_signal_value">%1$d dBm</string>
     <string name="home_wifi">WLAN</string>
@@ -63,7 +63,7 @@
     <string name="preferences_general_settings">Generell</string>
     <string name="preferences_terms_of_service">Vilkår for bruk</string>
     <string name="preferences_loop_test_count">Antall målinger</string>
-    <string name="loop_mode_clarification">Når sløyfemodus er aktivert, utføres nye tester automatisk etter den konfigurerte ventetiden eller når enheten beveger seg mer enn den konfigurerte avstanden.</string>
+    <string name="loop_mode_clarification">Når sløyfemodus er aktivert, utføres nye tester automatisk etter den konfigurerte ventetiden eller når enheten forflytter seg mer enn den konfigurerte avstanden.</string>
     <string name="preferences_privacy">Personvern</string>
     <string name="preferences_persistent_clientUUID">Vedvarende klient UUID</string>
     <string name="preferences_persistent_clientUUID_summary">Vedvarende klient UUID er nødvendig for å muliggjøre målehistorikk og synkronisering av resultatene mellom enheter</string>
@@ -74,13 +74,13 @@
 
     <string name="preferences_version">Versjon</string>
 
-    <string name="preferences_qos_measurement">QoS måling</string>
+    <string name="preferences_qos_measurement">QoS-måling</string>
     <string name="preferences_location">Plassering</string>
     <string name="preferences_loop_mode">Sløyfemodus</string>
     <string name="preferences_loop_mode_summary">Ny test etter ventetid eller tilbakelagt distanse. Maks. 2 dager</string>
     <string name="preferences_loop_mode_min_delay">Ventetid (i minutter)</string>
     <string name="preferences_loop_mode_max_movement">Avstand (i meter)</string>
-    <string name="preferences_expert_mode">Ekspert modus</string>
+    <string name="preferences_expert_mode">Ekspertmodus</string>
     <string name="preferences_expert_mode_summary">Vis avanserte innstillinger og informasjon</string>
     <string name="preferences_ipv4_only">Bare IPv4</string>
     <string name="preferences_ipv4_only_sum">Ikke bruk IPv6</string>
@@ -90,13 +90,13 @@
     <string name="preferences_about">Om</string>
     <string name="preferences_data_protection">Personvernerklæring</string>
     <string name="preferences_enter_code">Skriv inn koden</string>
-    <string name="preferences_developer_control_server">Kontrollserver</string>
-    <string name="preferences_override_control_server">Overstyr kontrollserveren</string>
-    <string name="preferences_override_control_server_sum">Aktiver tilpassede kontrollserverinnstillinger</string>
+    <string name="preferences_developer_control_server">Kontrolltjener</string>
+    <string name="preferences_override_control_server">Overstyr kontrolltjeneren</string>
+    <string name="preferences_override_control_server_sum">Aktiver tilpassede kontrolltjenerinnstillinger</string>
     <string name="preferences_override_control_server_host">Kontrollvert</string>
     <string name="preferences_override_control_server_port">Kontrollport</string>
     <string name="preferences_override_control_server_ssl">Kontroller SSL</string>
-    <string name="preferences_override_control_server_ssl_sum">Bruk kryptert tilkobling for å kontrollere serveren</string>
+    <string name="preferences_override_control_server_ssl_sum">Bruk kryptert tilkobling for å kontrollere tjeneren</string>
     <string name="preferences_developer_options_disabled">Utvikleralternativer deaktivert</string>
     <string name="preferences_developer_options_available">Utvikleralternativer tilgjengelig</string>
     <string name="preferences_developer_try_again">Prøv igjen!</string>
@@ -106,15 +106,15 @@
     <string name="preferences_developer_map_host">Kartvert</string>
     <string name="preferences_developer_map_port">Kartport</string>
     <string name="preferences_developer_map_ssl">Kart server SSL</string>
-    <string name="preferences_developer_map_ssl_sum">Bruk kryptert tilkobling til kartserver</string>
-    <string name="preferences_category_developer_qos_server">QoS-server</string>
-    <string name="preferences_developer_qos_ssl">QoS-server SSL</string>
-    <string name="preferences_developer_qos_ssl_sum">Bruk kryptert tilkobling til QoS-server</string>
+    <string name="preferences_developer_map_ssl_sum">Bruk kryptert tilkobling til karttjener</string>
+    <string name="preferences_category_developer_qos_server">QoS-tjener</string>
+    <string name="preferences_developer_qos_ssl">QoS-tjener SSL</string>
+    <string name="preferences_developer_qos_ssl_sum">Bruk kryptert tilkobling til QoS-tjeneren</string>
     <string name="preferences_all_disabled">Deaktivert.</string>
-    <string name="preferences_server_selection">Servervalg</string>
+    <string name="preferences_server_selection">Tjenervalg</string>
     <string name="preferences_default_server_selection" />
-    <string name="label_server_selection">Servervalg</string>
-    <string name="preferences_tag">stikkord</string>
+    <string name="label_server_selection">Tjenervalg</string>
+    <string name="preferences_tag">Merke</string>
 
     <!-- Location Dialog -->
     <string name="location_dialog_label_title">Plassering</string>
@@ -199,7 +199,7 @@
     <string name="results_qoe_videos_hd">Videoer HD</string>
     <string name="results_qoe_videos_uhd">Videoer UHD</string>
     <string name="results_qoe_gaming">Spill</string>
-    <string name="results_qoe_gaming_cloud">Gaming Cloud</string>
+    <string name="results_qoe_gaming_cloud">Spill-sky</string>
     <string name="results_qoe_gaming_streaming">Streaming av spill</string>
     <string name="results_qoe_gaming_download">Nedlasting av spill</string>
     <string name="results_qoe_audio_streaming">Streaming av lyd</string>
@@ -209,7 +209,7 @@
     <string name="results_qoe_messaging">Meldinger</string>
     <string name="results_qoe_web">Internett</string>
     <string name="results_qoe_cloud">Sky</string>
-    <string name="results_qoe_qos">QoS tester</string>
+    <string name="results_qoe_qos">QoS-tester</string>
     <string name="results_network_type">Type</string>
     <string name="results_network_provider">Tilbyder</string>
     <string name="results_network_ssid">WLAN SSID</string>
@@ -334,14 +334,14 @@
 
     <string name="label_network_type">Nettverkstype</string>
     <string name="label_network_name">Nettverksnavn</string>
-    <string name="label_measurement_server">Måleserver</string>
-    <string name="label_change_test_server">Endre testserver</string>
+    <string name="label_measurement_server">Måletjener</string>
+    <string name="label_change_test_server">Endre testtjener</string>
 
     <string name="label_measurement_time_to_next_test">Tid til neste test</string>
     <string name="label_measurement_movement">Bevegelse</string>
 
     <string name="label_location_access_disabled">Posisjonstilgang deaktivert</string>
-    <string name="label_location_access_disabled_explanation">Gå til Posisjonsinnstillinger for å aktivere posisjonstilgang.</string>
+    <string name="label_location_access_disabled_explanation">Gå til posisjonsinnstillinger for å aktivere posisjonstilgang.</string>
     <string name="label_some_permission_denied">Apptillatelser mangler</string>
     <string name="label_some_permission_denied_explanation">Gå til appinnstillinger for å ordne manglende apptillatelser.</string>
     <string name="title_open_nettest_accuracy">Nkom Nettfart presisjon</string>
