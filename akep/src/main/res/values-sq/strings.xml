@@ -13,6 +13,11 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="measurements">Matje</string>
+    <string name="total_measurements">Matje totale</string>
+    <string name="average_down">Mesatarja poshtë</string>
+    <string name="average_up">Mesatarja lart</string>
+    <string name="average_latency">Vonesa mesatare</string>
 
     <string name="open_location_permission_dialog_label_location_not_permitted">Akep Nettest nuk lejohet të përdor vendndodhjen tuaj. Dëshironi të lejoni që Akep Nettest të përdor vendndodhjen tuaj?</string>
     <string name="notification_test_title">Akep nettest po ekzekutohet</string>
@@ -42,8 +47,8 @@
 
     <!-- Home screen -->
     <string name="home_attention">Vëmendje</string>
-    <string name="home_no_internet_connection">Pa lidhje interneti!</string>
-    <string name="home_no_internet_connection_details">Asnjë provë nuk është e mundur.</string>
+    <string name="home_no_internet_connection">Pa lidhje interneti</string>
+    <string name="home_no_internet_connection_details">Asnjë provë nuk është e mundur</string>
     <string name="home_signal_value">%1$d dBm</string>
     <string name="home_wifi">WLAN</string>
     <string name="public_ip_address">Adresa publike</string>
@@ -225,11 +230,6 @@
     <string name="map_label_map_appearance">Pamja e hartës</string>
     <string name="title_marker_item_details">Shfaq më shumë detaje</string>
 
-    <string name="map_search_location_dialog_title">Kërko</string>
-    <string name="map_search_location_dialog_info">Kërkoni për një adresë ose qytet:</string>
-    <string name="map_search_location_dialog_not_found">Adresa nuk u gjet.</string>
-    <string name="map_search_location_not_supported">Na vjen keq, ky funksion nuk mbështetet nga pajisja juaj.</string>
-
     <string name="text_failed_to_load_results">Ngarkimi i të dhënave dështoi. \ NJu lutemi tërhiqeni poshtë për të rifreskuar.</string>
 
     <string name="title_sync">Sinkronizimi</string>
@@ -252,8 +252,6 @@
     <string name="label_map_filters">Cilësimet e hartës</string>
     <string name="text_filter_confirm">Pranoj</string>
     <string name="text_filter_continue">Vazhdoni</string>
-    <string name="title_filters_type">Lloji i hartës</string>
-    <string name="title_filters_subtype">Llojet e opsioneve</string>
 
     <string name="graph_signal_value">-%1$s dBm</string>
 
@@ -330,7 +328,6 @@
 
     <string-array name="title_results_tabs">
         <item>Listë</item>
-        <item>Harta</item>
     </string-array>
 
     <string name="label_network_type">Lloji i rrjetit </string>
@@ -338,11 +335,6 @@
     <string name="label_measurement_server">Serveri i matjes </string>
     <string name="label_change_test_server">Ndrysho Serverin e Testit </string>
 
-    <string name="measurement">Matja</string>
-    <string name="label_measurement_ping_ms">Ping (ms)</string>
-    <string name="label_measurement_download_mbps">Shkarkimi (Mbps)</string>
-    <string name="label_measurement_upload_mbps">Ngarko (Mbps)</string>
-    <string name="label_measurement_qos">QoS (%)</string>
     <string name="label_measurement_time_to_next_test">Koha për provën tjetër</string>
     <string name="label_measurement_movement">Lëvizja</string>
 

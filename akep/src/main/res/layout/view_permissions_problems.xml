@@ -33,12 +33,12 @@
                 style="@style/Text.NetworkInfoSlider.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textAllCaps="true"
                 android:layout_marginEnd="@dimen/margin_small"
                 android:paddingStart="@dimen/margin_medium"
+                android:paddingEnd="@dimen/margin_medium"
+                android:textAllCaps="true"
                 app:layout_constraintEnd_toStartOf="@+id/drawable_help"
                 app:layout_constraintStart_toEndOf="@+id/drawable_warning"
-                android:paddingEnd="@dimen/margin_medium"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/label_some_permission_denied" />
 

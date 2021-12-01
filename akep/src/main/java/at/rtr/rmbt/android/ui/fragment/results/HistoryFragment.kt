@@ -5,6 +5,8 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.databinding.FragmentHistoryBinding
 import at.rtr.rmbt.android.di.viewModelLazy
@@ -52,7 +54,13 @@ class HistoryFragment : BaseFragment() {
             binding.swipeRefreshLayoutHistoryItems.isRefreshing = false
             historyViewModel.state.isHistoryEmpty.set(it.isEmpty())
             (parentFragment as? ResultsFragment)?.onDataLoaded(it.isEmpty())
-            adapter.submitList(it)
+            adapter.submitList(it) {
+                val layoutManager = (binding.recyclerViewHistoryItems.layoutManager as LinearLayoutManager)
+                val position = layoutManager.findFirstCompletelyVisibleItemPosition()
+                if (position != RecyclerView.NO_POSITION) {
+                    binding.recyclerViewHistoryItems.scrollToPosition(position)
+                }
+            }
         }
 
         binding.swipeRefreshLayoutHistoryItems.setOnRefreshListener {

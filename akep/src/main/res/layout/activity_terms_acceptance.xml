@@ -26,8 +26,8 @@
                     android:id="@+id/contentTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_dark_gray"
                     android:padding="@dimen/margin_large"
+                    android:textColor="@color/text_dark_gray"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:layout_editor_absoluteY="394dp" />
 
