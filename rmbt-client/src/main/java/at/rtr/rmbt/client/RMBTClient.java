@@ -892,7 +892,12 @@ public class RMBTClient implements RMBTClientCallback {
             float l = currentTime - jitterStartTimeLong;
             Log.e("PROGRESS SEGMENTS:", "start:   " + jitterStartTimeLong + "              now:   " + currentTime + "            diff:   " + l + "   " + (float) (l / jitterTestDurationNanos.get()));
             Timber.d("JITTER PROGRESS " + (l * 100) / jitterTestDurationNanos.get() + "%");
-            return l / jitterTestDurationNanos.get();
+            float progressPercent = 3.3f * l / jitterTestDurationNanos.get();
+            if (progressPercent >= 1f) {
+                progressPercent = 0.99f;
+            }
+            Timber.d("JITTER PROGRESS " + progressPercent + " %");
+            return progressPercent;
         }
     }
 
