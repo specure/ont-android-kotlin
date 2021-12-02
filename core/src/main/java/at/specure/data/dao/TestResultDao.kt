@@ -23,4 +23,7 @@ interface TestResultDao {
 
     @Query("SELECT * from ${Tables.TEST_RESULT} WHERE uuid == :uuid")
     fun get(uuid: String): LiveData<TestResultRecord?>
+
+    @Query("SELECT * from ${Tables.TEST_RESULT} WHERE uuid == :uuid")
+    fun getObject(uuid: String): TestResultRecord?
 }

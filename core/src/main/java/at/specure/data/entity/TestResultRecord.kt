@@ -88,7 +88,7 @@ data class TestResultRecord(
     /**
      * Network name (ssid)
      */
-    val networkName: String?,
+    var networkName: String?,
 
     /**
      * Classification value for assigning traffic-light-color

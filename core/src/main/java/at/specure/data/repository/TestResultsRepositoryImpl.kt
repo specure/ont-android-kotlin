@@ -12,6 +12,7 @@ import at.specure.config.Config
 import at.specure.data.Classification
 import at.specure.data.ClientUUID
 import at.specure.data.CoreDatabase
+import at.specure.data.NetworkTypeCompat
 import at.specure.data.entity.QoeInfoRecord
 import at.specure.data.entity.QosCategoryRecord
 import at.specure.data.entity.QosTestGoalRecord
@@ -205,6 +206,14 @@ class TestResultsRepositoryImpl(
             val overallQosPercentage = qosTestResults.success.overallQosPercentage
             val partialQosResults = qosTestResults.success.partialQosResults
             saveOverallQosItem(overallQosPercentage, qosTestResults.success.testUUID)
+            val testResults = testResultDao.getObject(testUUID)
+
+            if (qosTestResults.success.operator?.isNotEmpty() == true && qosTestResults.success.operator != "unknown") {
+                if ((testResults != null) && (testResults.networkType != NetworkTypeCompat.TYPE_WLAN) && (testResults.networkType != NetworkTypeCompat.TYPE_LAN && testResults.networkType != NetworkTypeCompat.TYPE_BROWSER) && (testResults.networkType != NetworkTypeCompat.TYPE_UNKNOWN)) {
+                    testResults.networkName = qosTestResults.success.operator
+                    testResultDao.insert(testResults)
+                }
+            }
 
             partialQosResults.forEach { qosResultItem ->
                 qosCategoryDao.insert(
