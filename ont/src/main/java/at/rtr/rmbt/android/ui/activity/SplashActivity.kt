@@ -17,8 +17,10 @@ package at.rtr.rmbt.android.ui.activity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Bundle
 import android.os.Handler
 import androidx.core.content.ContextCompat
+import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.di.viewModelLazy
 import at.rtr.rmbt.android.viewmodel.SplashViewModel
 import at.specure.worker.WorkLauncher
@@ -27,7 +29,13 @@ class SplashActivity : BaseActivity() {
 
     private val viewModel: SplashViewModel by viewModelLazy()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash_screen)
+    }
+
     private val startHomeRunnable = Runnable {
+        PermissionsActivity.start(this)
         val accepted = viewModel.isTacAccepted()
         if (!accepted) {
             termsIsShown = true

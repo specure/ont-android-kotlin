@@ -50,10 +50,7 @@ class StaticPageActivity : BaseActivity() {
             if (pageContent != null) {
                 markwon.setMarkdown(binding.textViewDataPrivacyAndTermsOfUse, pageContent)
             } else {
-                markwon.setMarkdown(
-                    binding.textViewDataPrivacyAndTermsOfUse,
-                    getString(R.string.request_failure)
-                )
+                markwon.setMarkdown(binding.textViewDataPrivacyAndTermsOfUse, getString(R.string.request_failure))
             }
         }
 
@@ -73,8 +70,7 @@ class StaticPageActivity : BaseActivity() {
 
     companion object {
 
-        private const val KEY_DATA_PRIVACY_AND_TERMS_OF_USE_URL: String =
-            "KEY_DATA_PRIVACY_AND_TERMS_OF_USE_URL"
+        private const val KEY_DATA_PRIVACY_AND_TERMS_OF_USE_URL: String = "KEY_DATA_PRIVACY_AND_TERMS_OF_USE_URL"
         private const val KEY_TITLE: String = "KEY_TITLE"
         fun start(context: Context, dataPrivacyAndTermsUrl: String, title: String) {
 

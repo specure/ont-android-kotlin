@@ -26,8 +26,8 @@
         android:id="@+id/rootView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
         android:background="@drawable/settings_item_divider_bg"
+        android:gravity="center_vertical"
         android:minHeight="?android:attr/listPreferredItemHeight"
         android:padding="@dimen/padding_large">
 
@@ -50,9 +50,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/titleTVISS"
             android:layout_toStartOf="@+id/switchButton"
-            android:textColor="@color/text_light_gray"
             android:maxLines="2"
             android:text="@{summary}"
+            android:textColor="@color/text_light_gray"
             app:visibleOrGone="@{summary != null}"
             tools:text="Summary" />
 

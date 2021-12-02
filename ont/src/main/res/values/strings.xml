@@ -13,9 +13,16 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="measurements">Measurements</string>
+    <string name="total_measurements">Total Measurements</string>
+    <string name="average_down">Average Down</string>
+    <string name="average_up">Average Up</string>
+    <string name="average_latency">Average Latency</string>
+
+    <string name="splash_text">Test the speed of your internet.</string>
 
     <string name="open_location_permission_dialog_label_location_not_permitted">Open Nettest is not allowed to use your location. Would you like to allow Open Nettest to use your location?</string>
-    <string name="notification_test_title">Open nettest is running</string>
+    <string name="notification_test_title">Open Nettest is running</string>
     <string name="notification_signal_test_text">Open Nettest signal measurement is running in the background</string>
     <string name="text_loop_instruction_1">The loop mode option for technically interested users allows the automatic repetition of Open Nettest. The first test starts right after activation of the loop-modus; further tests are carried out when either the waiting time has elapsed or the specified distance has been covered. Tests will be performed until the configured number of tests has been reached. The signal strength is measured continuously, also between two tests. The loop-modus can be stopped at any time respectively it stops after 48 hours. It needs to be explicitly pointed out that due to the loop mode it cannot be excluded that the tester is identified.</string>
     <string name="loop_mode_finished">Open Nettest loop mode finished!</string>
@@ -38,11 +45,12 @@
     <string name="dialog_title_error">Error</string>
     <string name="error_unknown">Poor connection. Please try again later</string>
     <string name="no_internet_connection_not_load_data">No Internet connection. Could not load data.</string>
+    <string name="request_failure">An error occurred while retrieving the data.</string>
 
     <!-- Home screen -->
     <string name="home_attention">Attention</string>
-    <string name="home_no_internet_connection">No Internet connection!</string>
-    <string name="home_no_internet_connection_details">No test is possible.</string>
+    <string name="home_no_internet_connection">No internet connection</string>
+    <string name="home_no_internet_connection_details">No test is possible</string>
     <string name="home_signal_value">%1$d dBm</string>
     <string name="home_wifi">WLAN</string>
     <string name="public_ip_address">Public address</string>
@@ -121,12 +129,12 @@
     <string name="open_gps_setting_dialog_label_cancel">Cancel</string>
     <string name="location_dialog_age">%1$s s</string>
     <string name="location_dialog_accuracy">%1$s m</string>
+
     <string name="location_location_direction_n">N %1$s</string>
     <string name="location_location_direction_e">E %1$s</string>
     <string name="location_location_direction_s">S %1$s</string>
     <string name="location_location_direction_w">W %1$s</string>
     <string name="open_location_permission_dialog_label_open_permission_setting">Open application settings</string>
-
 
     <string name="text_ip_address_not_available">Address is not available</string>
     <string name="input_setting_dialog_ok">OK</string>
@@ -205,22 +213,23 @@
     <string name="results_network_provider">Provider</string>
     <string name="results_network_ssid">WLAN SSID</string>
     <string name="result_test_details">Test details</string>
+    <string name="label_information">Information</string>
+    <string name="label_tests">Tests</string>
+    <string name="label_succeeded">SUCCEEDED</string>
+    <string name="label_failed">FAILED</string>
+    <string name="label_description">DESCRIPTION</string>
+    <string name="label_detail">DETAILS</string>
 
     <!-- Map -->
     <string name="map_layer_communities">Communities</string>
     <string name="map_layer_points">Points</string>
     <string name="map_layer_automatic">Automatic</string>
     <string name="map_label_overlay_type">Overlay type</string>
-    <string name="map_style_hybrid" translatable="false">Hybrid</string>
-    <string name="map_style_satellite" translatable="false">Satellite</string>
-    <string name="map_style_standard" translatable="false">Standard</string>
+    <string name="map_style_hybrid">Hybrid</string>
+    <string name="map_style_satellite">Satellite</string>
+    <string name="map_style_standard">Standard</string>
     <string name="map_label_map_appearance">Map appearance</string>
     <string name="title_marker_item_details">Show more details</string>
-
-    <string name="map_search_location_dialog_title">Search</string>
-    <string name="map_search_location_dialog_info">Search for an address or city:</string>
-    <string name="map_search_location_dialog_not_found">Address not found.</string>
-    <string name="map_search_location_not_supported">Sorry, this function is not supported by your device.</string>
 
     <string name="text_failed_to_load_results">Failed to load data.\nPlease pull down to refresh.</string>
 
@@ -244,8 +253,6 @@
     <string name="label_map_filters">Map settings</string>
     <string name="text_filter_confirm">Accept</string>
     <string name="text_filter_continue">Continue</string>
-    <string name="title_filters_type">Map type</string>
-    <string name="title_filters_subtype">Type options</string>
 
     <string name="graph_signal_value">-%1$s dBm</string>
 
@@ -282,7 +289,7 @@
     <string name="signal_measurement_terms_title">Activation and usage</string>
     <string name="signal_measurement_terms_content">The signal-only loop mode option for technically interested users allows the automatic repetition of signal measurements - without any speed- or quality tests being carried out. The signal-only loop-modus can be stopped at any time respectively it stops automatically after 48 hours. The signal-only loop-modus is (only) intended for use within the EU and the EEA. The battery is quickly drained by the signal-only measurements. In the pauses between tests, the GPS and the display remain active and signal measurements continue, which means that the energy is used up much faster than in stand-by mode. The loop-modus should therefore only be used if an external power supply is available. It needs to be explicitly pointed out that due to the signal-only loop mode it cannot be excluded that the tester is identified.</string>
     <string name="text_phase_init">Initialization</string>
-    <string name="text_phase_qos">Quality of Service</string>
+    <string name="text_phase_qos">QoS</string>
     <string name="text_phase_upload">Upload</string>
     <string name="text_phase_download">Download</string>
     <string name="text_phase_ping">Ping</string>
@@ -297,8 +304,8 @@
     <string name="title_permissions_accuracy">Open Nettest Accuracy</string>
     <string name="text_permissions_accuracy">Open Nettest needs certain functionality to operate correctly.</string>
     <string name="text_permissions_accuracy_phone">We will never make or manage phone calls. We use phone permissions to identify the mobile operator used for testing.</string>
-    <string name="title_permissions_accuracy_phone">Phone Permissons</string>
-    <string name="title_permissions_accuracy_location">Location Permissons</string>
+    <string name="title_permissions_accuracy_phone">Phone Permissions</string>
+    <string name="title_permissions_accuracy_location">Location Permissions</string>
     <string name="text_permissions_accuracy_location">Your location identifies nearby servers and your device\'s cellular connection in order to properly configure Open Nettest</string>
     <string name="button_continue">Continue</string>
     <string name="title_permissions_signal">Allow network signal scanning</string>
@@ -313,6 +320,7 @@
     <string name="title_permissions_uuid">Persistent Client UUID</string>
     <string name="text_permissions_uuid">Client UUID is a randomly generated ID that is saved with every measurement. Persistent Client UUID means that the ID is the same for your every measurement. It is needed to enable measurement history and synchronisation of the results between devices. You can change it later in settings.</string>
 
+
     <string name="title_result_filter_operators">Operators</string>
     <string name="label_results">Results</string>
     <string name="title_loop_measurements">Loop measurements</string>
@@ -321,26 +329,13 @@
 
     <string-array name="title_results_tabs">
         <item>List</item>
-        <item>Map</item>
     </string-array>
 
-    <string name="text_label_ipv6" translatable="false">Ipv6</string>
-    <string name="text_label_ipv4" translatable="false">Ipv4</string>
     <string name="label_network_type">Network type</string>
     <string name="label_network_name">Network name</string>
     <string name="label_measurement_server">Measurement server</string>
     <string name="label_change_test_server">Change Test Server</string>
-    <string name="text_server_distance_pattern" translatable="false">%d km</string>
-    <string name="label_network_info_wifi" translatable="false">WiFi</string>
-    <string name="label_network_info_ethernet" translatable="false">Ethernet</string>
 
-    <string name="request_failure">An error occurred while retrieving the data.</string>
-
-    <string name="measurement">Measurement</string>
-    <string name="label_measurement_ping_ms">Ping (ms)</string>
-    <string name="label_measurement_download_mbps">Download (Mbps)</string>
-    <string name="label_measurement_upload_mbps">Upload (Mbps)</string>
-    <string name="label_measurement_qos">QoS (%)</string>
     <string name="label_measurement_time_to_next_test">Time to next test</string>
     <string name="label_measurement_movement">Movement</string>
 
@@ -358,5 +353,12 @@
     <string name="technology">Technology</string>
     <string name="primary_connection">Primary</string>
     <string name="secondary_connection">Secondary</string>
+    <string name="search_tooltip">Search by address, municipality…</string>
+    <string name="filter_technology_all">All</string>
+    <string name="map_disclaimer">The map shows measurements done through the Akep apps. It is not a coverage map.</string>
+    <string name="text_no_persistent_client_uuid">Akep Nettest needs certain permissions to operate correctly</string>
+    <string name="text_link_no_persistent_client_uuid">Go to privacy permissions</string>
+    <string name="permissions">Permissions</string>
+    <string name="median_values">Median values</string>
 
 </resources>

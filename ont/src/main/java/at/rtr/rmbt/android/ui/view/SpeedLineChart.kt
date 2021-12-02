@@ -18,12 +18,12 @@ import at.rtr.rmbt.android.R
 import at.specure.data.NetworkTypeCompat
 import at.specure.data.entity.GraphItemRecord
 import at.specure.data.entity.TestResultGraphItemRecord
+import timber.log.Timber
 import kotlin.math.log10
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.sqrt
-import timber.log.Timber
 
 class SpeedLineChart @JvmOverloads constructor(
     context: Context,

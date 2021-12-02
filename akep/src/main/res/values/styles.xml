@@ -28,8 +28,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowBackground">@color/colorPrimary</item>
-        <item name="colorControlHighlight">@color/greenRipple</item>
+        <item name="colorControlHighlight">@color/primaryRipple</item>
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="PreferenceTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -39,7 +41,9 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="colorControlHighlight">@color/greenRipple</item>
+        <item name="colorControlHighlight">@color/primaryRipple</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="MeasurementTheme" parent="AppTheme">
@@ -47,12 +51,20 @@
         <item name="android:statusBarColor">@color/colorPrimary</item>
     </style>
 
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="colorControlNormal">#00000000</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+    </style>
+
     <!--  Splash screen theme -->
 
     <style name="SplashNoActionBarTheme" parent="AppTheme.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_background</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="NavigationButtonStyle">
@@ -61,27 +73,28 @@
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:scaleType">center</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
-
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="ItemBackground" parent="android:Widget">
         <item name="colorControlHighlight">@color/blackRipple</item>
     </style>
 
-    <!-- Roboto font style -->
+    <!-- Roboto New font style -->
     <style name="RobotoRegularStyle">
-        <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="RobotoMediumStyle">
-        <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
     </style>
 
     <style name="RobotoBoldStyle">
-        <item name="android:fontFamily">@font/roboto_bold</item>
         <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
     <style name="RobotoRegularStyle.VerySmall">
@@ -108,11 +121,11 @@
         <item name="android:textSize">16sp</item>
     </style>
 
-    <!--<style name="RobotoRegularStyle.Large">
+    <!--<style name="RobotoBoldStyle.Large">
         <item name="android:textSize">20sp</item>
     </style>-->
 
-    <!--<style name="RobotoRegularStyle.ExtraLarge">
+    <!--<style name="RobotoBoldStyle.ExtraLarge">
         <item name="android:textSize">24sp</item>
     </style>-->
 
@@ -144,7 +157,9 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowBackground">@null</item>
-        <item name="colorControlHighlight">@color/greenRipple</item>
+        <item name="colorControlHighlight">@color/primaryRipple</item>
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
     <style name="TextInputTheme" parent="AppTheme">
@@ -160,16 +175,16 @@
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textColor">@color/dark</item>
     </style>
 
     <style name="Text.MeasurementProgress.Units" parent="RobotoMediumStyle">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">@color/main_color</item>
+        <item name="android:textColor">@color/dark</item>
     </style>
 
     <style name="ResultMainItemLabel" parent="RobotoMediumStyle.VerySmall">
-        <item name="android:textColor">@color/black_40</item>
+        <item name="android:textColor">@color/shade_50</item>
         <item name="textAllCaps">true</item>
     </style>
 
@@ -193,7 +208,7 @@
 
     <style name="Text.ResultListValue" parent="RobotoRegularStyle">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textColor">@color/primary</item>
     </style>
 
     <style name="Text.ResultListDate" parent="RobotoMediumStyle">
@@ -231,12 +246,6 @@
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_corners_top</item>
-    </style>
-
-    <style name="MeasurementSectionLabel" parent="RobotoMediumStyle.Small">
-        <item name="android:textColor">@color/black_40</item>
-        <item name="textAllCaps">true</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="MeasurementValueLabel" parent="RobotoMediumStyle.Small">

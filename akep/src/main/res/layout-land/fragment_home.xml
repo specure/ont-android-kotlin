@@ -54,17 +54,19 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/logo"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="20dp"
             android:src="@drawable/image_home"
+            app:layout_constraintTop_toBottomOf="@id/tvTextNoConnection"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_logo" />
+            app:layout_constraintWidth_percent="0.45" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/ivSignalLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@drawable/bg_button_run"
             android:paddingStart="40dp"
             android:paddingTop="20dp"
@@ -75,14 +77,15 @@
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:translationZ="0dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintStart_toStartOf="@id/panel_network_details"
             app:layout_constraintEnd_toEndOf="@id/panel_network_details"
+            app:layout_constraintStart_toStartOf="@id/panel_network_details"
             app:layout_constraintTop_toBottomOf="@id/panel_network_details"
+            app:layout_constraintVertical_chainStyle="packed"
             app:visibleOrGone="@{state.isConnected}" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/buttonLoop"
+            visibleOrGone="{state.isConnected}"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/home_loop_button_height"
             android:layout_marginEnd="@dimen/margin_medium"
@@ -96,22 +99,24 @@
             android:paddingBottom="@dimen/padding_medium"
             android:text="@string/title_loop_mode"
             android:textAllCaps="false"
+            android:textColor="@android:color/black"
             android:translationZ="@dimen/cardview_default_elevation"
             app:layout_constraintBottom_toBottomOf="@id/app_logo"
             app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
             app:layout_constraintTop_toTopOf="@id/app_logo" />
 
         <include
+            android:id="@+id/panel_network_details"
             layout="@layout/view_network_details"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/buttonLoop"
-            android:layout_marginEnd="32dp"
-            android:layout_marginTop="24dp"
             app:layout_constraintWidth_percent="0.45"
-            app:visibleOrInvisible="@{state.informationAccessProblem == InformationAccessProblem.NO_PROBLEM}"
-            android:layout_height="wrap_content"
-            android:id="@+id/panel_network_details" />
+            app:layout_constraintBottom_toTopOf="@+id/ivSignalLevel"
+            app:visibleOrInvisible="@{state.informationAccessProblem == InformationAccessProblem.NO_PROBLEM}" />
 
         <include
             android:id="@+id/panel_permissions_problems"
@@ -119,11 +124,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            app:layout_constraintBottom_toTopOf="@+id/ivSignalLevel"
             android:layout_marginEnd="32dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:visibleOrGone="@{state.informationAccessProblem != InformationAccessProblem.NO_PROBLEM}"
             app:layout_constraintTop_toBottomOf="@id/buttonLoop"
-            app:layout_constraintWidth_percent="0.45" />
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintWidth_percent="0.45"
+            app:visibleOrGone="@{state.informationAccessProblem != InformationAccessProblem.NO_PROBLEM}" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/buttonSettings"
@@ -139,7 +146,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/ivLoopStatusIcon"
-            visibleOrGone="@{state.isLoopModeActive}"
+            visibleOrGone="@{state.isLoopModeActive &amp;&amp; state.isConnected}"
             android:layout_width="@dimen/history_image_size"
             android:layout_height="@dimen/history_image_size"
             android:layout_marginEnd="@dimen/margin_medium"
@@ -164,7 +171,7 @@
             app:layout_constraintBottom_toTopOf="@id/logo"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonSettings"
+            app:layout_constraintTop_toBottomOf="@+id/app_logo"
             app:visibleOrGone="@{!state.isConnected}" />
 
         <androidx.appcompat.widget.AppCompatTextView

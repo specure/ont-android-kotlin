@@ -92,18 +92,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/logo"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_large"
-                        android:layout_marginTop="80dp"
-                        android:layout_marginEnd="@dimen/margin_large"
-                        android:src="@drawable/image_home"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/basic_result_container" />
-
                     <androidx.constraintlayout.widget.Group
                         android:id="@+id/networkTypeGroup"
                         visibleOrGone="@{state.testResult != null}"
@@ -125,12 +113,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="40dp"
                         android:layout_marginTop="54dp"
-                        android:text="@string/results_network_type"
+                        android:text="@string/label_network_type"
                         app:layout_constraintEnd_toStartOf="@+id/labelNetworkName"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/logo"
+                        app:layout_constraintTop_toBottomOf="@+id/basic_result_container"
                         app:visibleOrGone="@{state.testResult != null &amp;&amp; state.testResult.networkTypeText != null}"
                         tools:text="Connection" />
 
@@ -154,7 +142,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="40dp"
-                        android:text="@string/results_network_ssid"
+                        android:text="@{state.testResult.networkType == NetworkTypeCompat.TYPE_WLAN ? @string/results_network_ssid : @string/label_network_name }"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintHorizontal_weight="1"
@@ -175,34 +163,6 @@
                         app:text="@{state.testResult.networkName}"
                         app:visibleOrGone="@{state.testResult != null &amp;&amp; state.testResult.networkName != null &amp;&amp; !state.testResult.networkName.isEmpty()}"
                         tools:text="WIFIFINKA" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/labelProviderName"
-                        style="@style/ResultMainItemLabel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="40dp"
-                        android:text="@string/results_network_provider"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintStart_toEndOf="@+id/labelConnection"
-                        app:layout_constraintTop_toTopOf="@+id/labelConnection"
-                        app:visibleOrGone="@{state.testResult != null &amp;&amp; state.testResult.networkProviderName != null &amp;&amp; !state.testResult.networkProviderName.isEmpty()  &amp;&amp; (state.testResult.networkName == null || state.testResult.networkName.isEmpty())}"
-                        tools:text="Provider" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/textProviderName"
-                        style="@style/ResultMainItemValue"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="@+id/labelNetworkName"
-                        app:layout_constraintHorizontal_weight="1"
-                        app:layout_constraintStart_toEndOf="@+id/textConnection"
-                        app:layout_constraintTop_toBottomOf="@+id/labelNetworkName"
-                        app:text="@{state.testResult.networkProviderName}"
-                        app:visibleOrGone="@{state.testResult != null &amp;&amp; state.testResult.networkProviderName != null &amp;&amp; !state.testResult.networkProviderName.isEmpty() &amp;&amp; (state.testResult.networkName == null || state.testResult.networkName.isEmpty())}"
-                        tools:text="O2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.core.widget.NestedScrollView>

@@ -1,7 +1,7 @@
 package at.rtr.rmbt.android.ui.viewstate
 
-import androidx.databinding.ObservableInt
 import androidx.databinding.ObservableBoolean
+import androidx.databinding.ObservableInt
 import at.rtr.rmbt.android.config.AppConfig
 import at.rtr.rmbt.android.util.addOnPropertyChanged
 

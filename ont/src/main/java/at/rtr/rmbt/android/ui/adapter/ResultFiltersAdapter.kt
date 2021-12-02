@@ -10,13 +10,13 @@ import at.rtr.rmbt.android.viewmodel.ResultListFiltersViewModel
 class ResultFiltersAdapter : RecyclerView.Adapter<ResultFiltersAdapter.Holder>() {
 
     var items = mutableListOf<ResultListFiltersViewModel.FilterOption>()
-    set(value) {
-        field.clear()
-        field.addAll(value)
-        selected.clear()
-        selected.addAll(items.filter { it.selected })
-        notifyDataSetChanged()
-    }
+        set(value) {
+            field.clear()
+            field.addAll(value)
+            selected.clear()
+            selected.addAll(items.filter { it.selected })
+            notifyDataSetChanged()
+        }
 
     var selected: MutableSet<ResultListFiltersViewModel.FilterOption> = LinkedHashSet()
         private set

@@ -12,7 +12,8 @@ import kotlin.random.Random
 class MeasurementServerSelectionViewModel @Inject constructor(private val servers: MeasurementServers) : BaseViewModel() {
 
     val measurementServers = servers.measurementServers!!.map { ServerWithDistance.from(it) }
-//        if (servers.measurementServers.isNullOrEmpty()) provideMockedData() else servers.measurementServers!!.map { ServerWithDistance.from(it) }
+
+    //        if (servers.measurementServers.isNullOrEmpty()) provideMockedData() else servers.measurementServers!!.map { ServerWithDistance.from(it) }
     val selected =
         MutableLiveData<ServerWithDistance?>().also {
             it.value = servers.selectedMeasurementServer?.let { it1 -> ServerWithDistance.from(it1) } ?: measurementServers.first()

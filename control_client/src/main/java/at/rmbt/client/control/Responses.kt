@@ -706,6 +706,8 @@ data class ResultDetailONTResponse(
     val packetLossPercents: Float?,
     @SerializedName("network_type")
     val networkType: String?,
+    @SerializedName("operator")
+    val operator: String?,
     @SerializedName("qos")
     val overallQosPercentage: Float?,
     @SerializedName("qosTestResultCounters")

@@ -15,13 +15,13 @@ import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.config.CMSEndpointProviderImpl
 import at.rtr.rmbt.android.databinding.FragmentSettingsBinding
 import at.rtr.rmbt.android.di.viewModelLazy
-import at.rtr.rmbt.android.ui.activity.LoopInstructionsActivity
 import at.rtr.rmbt.android.ui.activity.StaticPageActivity
+import at.rtr.rmbt.android.ui.activity.LoopInstructionsActivity
 import at.rtr.rmbt.android.ui.dialog.InputSettingDialog
+import at.rtr.rmbt.android.ui.dialog.OpenGpsSettingDialog
 import at.rtr.rmbt.android.ui.dialog.OpenLocationPermissionDialog
 import at.rtr.rmbt.android.ui.dialog.ServerSelectionDialog
 import at.rtr.rmbt.android.ui.dialog.SimpleDialog
-import at.rtr.rmbt.android.ui.dialog.OpenGpsSettingDialog
 import at.rtr.rmbt.android.util.addOnPropertyChanged
 import at.rtr.rmbt.android.util.listen
 import at.rtr.rmbt.android.viewmodel.SettingsViewModel
@@ -42,6 +42,8 @@ class SettingsFragment : BaseFragment(), InputSettingDialog.Callback, ServerSele
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.state = settingsViewModel.state
+
+        settingsViewModel.state.showPermissionsOnly = arguments?.getBoolean(KEY_PERMISSIONS_ONLY, false) == true
 
         binding.loopModeWaitingTime.frameLayoutRoot.setOnClickListener {
             InputSettingDialog.instance(
@@ -93,6 +95,24 @@ class SettingsFragment : BaseFragment(), InputSettingDialog.Callback, ServerSele
 
         settingsViewModel.state.clientUUID.liveData.listen(this) {
             binding.clientUUIDvalue.text = if (it.isNullOrEmpty()) "" else "U$it"
+        }
+
+        binding.switchPersistentClientUUID.switchButton.isClickable = false
+        binding.switchPersistentClientUUID.rootView.setOnClickListener {
+            if (binding.switchPersistentClientUUID.switchButton.isChecked) {
+                settingsViewModel.state.persistentClientUUIDEnabled.set(false)
+            } else {
+                settingsViewModel.state.persistentClientUUIDEnabled.set(true)
+            }
+        }
+
+        binding.switchAnalytics.switchButton.isClickable = false
+        binding.switchAnalytics.rootView.setOnClickListener {
+            if (binding.switchAnalytics.switchButton.isChecked) {
+                settingsViewModel.state.analyticsEnabled.set(false)
+            } else {
+                settingsViewModel.state.analyticsEnabled.set(true)
+            }
         }
 
         settingsViewModel.locationStateLiveData.listen(this) {
@@ -386,11 +406,20 @@ class SettingsFragment : BaseFragment(), InputSettingDialog.Callback, ServerSele
         private const val KEY_RADIO_INFO_CODE: Int = 8
         private const val KEY_DEVELOPER_TAG_CODE: Int = 9
         private const val KEY_REQUEST_CODE_LOOP_MODE_TEST_COUNT: Int = 10
+        private const val KEY_PERMISSIONS_ONLY = "KEY_PERMISSIONS_ONLY"
 
         private const val CODE_LOOP_INSTRUCTIONS = 13
         private const val CODE_DIALOG_INVALID = 14
 
-        fun newInstance() = SettingsFragment()
+        fun newInstance(permissionsOnly: Boolean): SettingsFragment {
+            Bundle().apply {
+
+                putBoolean(KEY_PERMISSIONS_ONLY, permissionsOnly)
+                val fragment = SettingsFragment()
+                fragment.arguments = this
+                return fragment
+            }
+        }
     }
 
     override fun onDialogPositiveClicked(code: Int) {
