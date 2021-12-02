@@ -353,4 +353,12 @@
 
     <string name="primary_connection">Primare</string>
     <string name="secondary_connection">Sekondare</string>
+    <string name="splash_text">Testoni shpejtësinë e internetit tuaj.</string>
+    <string name="search_tooltip">Kërko sipas adresës, komunës…</string>
+    <string name="filter_technology_all">Të gjitha</string>
+    <string name="map_disclaimer">Harta tregon matjet e bëra përmes aplikacioneve Akep. Nuk është një hartë mbulimi.</string>
+    <string name="text_no_persistent_client_uuid">Akep Nettest ka nevojë për leje të caktuara për të funksionuar siç duhet</string>
+    <string name="text_link_no_persistent_client_uuid">Shkoni te lejet e privatësisë</string>
+    <string name="permissions">Lejet</string>
+    <string name="median_values">Vlerat mesatare</string>
 </resources>
