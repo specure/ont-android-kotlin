@@ -107,4 +107,7 @@
     <color name="graph_background">#19000000</color>
     <color name="shade_50">#7F000000</color>
 
+    <color name="speed_graph_gradient_fill_start">#26004394</color>
+    <color name="speed_graph_gradient_fill_end">#0Df2f6fa</color>
+
 </resources>
