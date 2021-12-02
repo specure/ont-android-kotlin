@@ -7,6 +7,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import at.rmbt.client.control.IpProtocol
 import at.rtr.rmbt.android.R
@@ -17,7 +18,6 @@ import at.rtr.rmbt.android.ui.view.ProgressBar
 import at.rtr.rmbt.android.ui.view.ResultBar
 import at.rtr.rmbt.android.ui.view.ResultsTechnologyView
 import at.rtr.rmbt.android.ui.view.SpeedLineChart
-import at.rtr.rmbt.android.ui.view.WaveView
 import at.rtr.rmbt.android.util.InfoWindowStatus
 import at.rtr.rmbt.android.util.format
 import at.specure.data.Classification
@@ -263,11 +263,6 @@ fun ImageView.setIPAddressIcon(ipInfo: IpInfo?) {
     }
 }
 
-@BindingAdapter("waveEnabled")
-fun waveEnabled(view: WaveView, enabled: Boolean) {
-    view.waveEnabled = enabled
-}
-
 val THRESHOLD_PING = listOf(0.0, 10.0, 25.0, 75.0) // 0ms, 10ms, 25ms, 75ms
 
 /**
@@ -473,13 +468,16 @@ fun SpeedLineChart.reset(measurementState: MeasurementState) {
     }
 }
 
-@BindingAdapter("percentage")
-fun MeasurementProgressSquareView.setPercents(percentage: Int) {
-    setProgress(percentage)
+@BindingAdapter(
+    value = ["percentage", "measurementProgressPhase"],
+    requireAll = true
+)
+fun MeasurementProgressSquareView.setPercents(percentage: Int, measurementProgressPhase: MeasurementState) {
+    setProgress(percentage, measurementProgressPhase)
 }
 
 @BindingAdapter(
-    value = ["measurementPhase", "downloadSpeed", "uploadSpeed", "ping", "jitter", "packetLoss", "qos"],
+    value = ["measurementPhase", "downloadSpeed", "uploadSpeed", "ping", "jitter", "packetLoss", "phaseProgress", "qos"],
     requireAll = true
 )
 fun MeasurementProgressSquareView.setMeasurementPhase(
@@ -489,6 +487,7 @@ fun MeasurementProgressSquareView.setMeasurementPhase(
     ping: Long,
     jitter: Long,
     packetLoss: Integer,
+    phaseProgress: Integer,
     qos: Integer?
 ) {
     setMeasurementState(state)
@@ -496,8 +495,14 @@ fun MeasurementProgressSquareView.setMeasurementPhase(
         if (ping > 0) {
             setSpeed(ping / 1000000.0f)
         } else {
-            setSpeed(-1.0f)
+            setSpeed(phaseProgress.toFloat())
+        }
+    }
+    if (state == MeasurementState.JITTER_AND_PACKET_LOSS) {
+        if (jitter > 0) {
             setSpeed(jitter / 1000000.0f)
+        } else {
+            setSpeed(phaseProgress.toFloat())
         }
     }
     if (state == MeasurementState.UPLOAD) {
@@ -532,6 +537,9 @@ fun MeasurementMedianSquareView.setMeasurementPhase(
             setSpeed(-1.0f)
             setSpeed(jitter / 1000000.0f)
         }
+    }
+    if (state == MeasurementState.JITTER_AND_PACKET_LOSS) {
+        setSpeed(jitter / 1000000.0f)
     }
     if (state == MeasurementState.UPLOAD) {
         setSpeed(uploadSpeed / 1000000.0f)
@@ -813,8 +821,8 @@ fun AppCompatTextView.setPingResult(pingResult: Double) {
  * A binding adapter that is used for show jitter in results
  */
 @BindingAdapter("jitterResult")
-fun AppCompatTextView.setJitterResult(jitterResult: Double) {
-    text = if (jitterResult >= 0) {
+fun AppCompatTextView.setJitterResult(jitterResult: Double?) {
+    text = if (jitterResult != null && jitterResult >= 0) {
         jitterResult.roundToInt().toString()
     } else {
         context.getString(R.string.measurement_dash)
@@ -825,8 +833,8 @@ fun AppCompatTextView.setJitterResult(jitterResult: Double) {
  * A binding adapter that is used for show packet loss rate in results
  */
 @BindingAdapter("packetLossResult")
-fun AppCompatTextView.setPacketLossResult(packetLossResult: Double) {
-    text = if (packetLossResult >= 0) {
+fun AppCompatTextView.setPacketLossResult(packetLossResult: Double?) {
+    text = if (packetLossResult != null && packetLossResult >= 0) {
         (packetLossResult * 100f).roundToInt().toString()
     } else {
         context.getString(R.string.measurement_dash)
@@ -884,6 +892,36 @@ fun AppCompatTextView.setSignalStrength(signalStrengthResult: Int?, signalStreng
                 R.drawable.ic_small_wifi_dark_green
             }
         }, 0, 0, 0
+    )
+}
+
+/**
+ * A binding adapter that is used for show correct icon for qoe item in the results
+ */
+@BindingAdapter("qoeIcon")
+fun AppCompatImageView.setQoEIcon(qoECategory: QoECategory) {
+    setImageDrawable(
+        ContextCompat.getDrawable(
+            context,
+            when (qoECategory) {
+                QoECategory.QOE_UNKNOWN -> 0
+                QoECategory.QOE_AUDIO_STREAMING -> R.drawable.ic_qoe_music
+                QoECategory.QOE_VIDEO_SD -> R.drawable.ic_qoe_video
+                QoECategory.QOE_VIDEO_HD -> R.drawable.ic_qoe_video
+                QoECategory.QOE_VIDEO_UHD -> R.drawable.ic_qoe_video
+                QoECategory.QOE_GAMING -> R.drawable.ic_qoe_game
+                QoECategory.QOE_GAMING_CLOUD -> R.drawable.ic_qoe_game
+                QoECategory.QOE_GAMING_STREAMING -> R.drawable.ic_qoe_game
+                QoECategory.QOE_GAMING_DOWNLOAD -> R.drawable.ic_qoe_game
+                QoECategory.QOE_VOIP -> R.drawable.ic_qoe_voip
+                QoECategory.QOE_VIDEO_TELEPHONY -> R.drawable.ic_qoe_voip
+                QoECategory.QOE_VIDEO_CONFERENCING -> R.drawable.ic_qoe_voip
+                QoECategory.QOE_MESSAGING -> R.drawable.ic_qoe_image
+                QoECategory.QOE_WEB -> R.drawable.ic_qoe_image
+                QoECategory.QOE_CLOUD -> R.drawable.ic_qoe_image
+                QoECategory.QOE_QOS -> R.drawable.ic_qoe_qos
+            }
+        )
     )
 }
 

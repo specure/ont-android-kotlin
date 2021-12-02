@@ -4,13 +4,13 @@ import at.rmbt.util.exception.HandledException
 import at.rtr.rmbt.android.ui.viewstate.SyncDeviceViewState
 import at.rtr.rmbt.android.util.safeOffer
 import at.specure.data.repository.DeviceSyncRepository
-import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class SyncDevicesViewModel @Inject constructor(private val repository: DeviceSyncRepository) : BaseViewModel() {
 

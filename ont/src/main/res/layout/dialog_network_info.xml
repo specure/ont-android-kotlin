@@ -151,7 +151,7 @@
 
                 <include
                     android:id="@+id/info_ipv6"
-                    layout="@layout/view_slider_home_ip"
+                    layout="@layout/view_slider_home_ip6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"

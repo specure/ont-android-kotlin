@@ -24,10 +24,12 @@ import at.rtr.rmbt.android.databinding.ItemHistoryBinding
 import at.rtr.rmbt.android.util.bindWith
 import at.specure.data.entity.History
 
-class LoopMeasurementAdapter(private val allowOpenDetails: Boolean = true) : ListAdapter<History, LoopMeasurementAdapter.HistoryHolder>(DIFF_CALLBACK) {
+class LoopMeasurementAdapter(private val allowOpenDetails: Boolean = true) :
+    ListAdapter<History, LoopMeasurementAdapter.HistoryHolder>(DIFF_CALLBACK) {
     var actionCallback: ((History) -> Unit)? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryHolder = HistoryHolder(parent.bindWith(R.layout.item_history), allowOpenDetails)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryHolder =
+        HistoryHolder(parent.bindWith(R.layout.item_history), allowOpenDetails)
 
     override fun onBindViewHolder(holder: HistoryHolder, position: Int) {
         getItem(position)?.let { item ->

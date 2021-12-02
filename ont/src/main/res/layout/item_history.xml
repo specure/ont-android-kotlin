@@ -20,8 +20,8 @@
 
         <at.rtr.rmbt.android.ui.view.ResultsTechnologyView
             android:id="@+id/imageSignal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/history_image_size"
+            android:layout_height="@dimen/history_image_size"
             android:layout_marginStart="16dp"
             android:contentDescription="@null"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.25" />
+            app:layout_constraintGuide_percent="0.40" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/qos"
@@ -60,11 +60,11 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{item.qos}"
-            app:visibleOrInvisible="@{item.qos != null}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/download"
             app:layout_constraintStart_toEndOf="@id/guideline"
             app:layout_constraintTop_toTopOf="parent"
+            app:visibleOrInvisible="@{item.qos != null}"
             tools:text="99" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -104,7 +104,7 @@
             android:gravity="center"
             android:text="@{item.ping}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/jitter"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/upload"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="14" />
@@ -117,7 +117,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{item.jitterMillis}"
-            app:visibleOrInvisible="@{item.jitterMillis != null}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/packetLoss"
             app:layout_constraintStart_toEndOf="@id/ping"
@@ -132,7 +132,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@{item.packetLossPercents}"
-            app:visibleOrInvisible="@{item.packetLossPercents != null}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/jitter"

@@ -16,6 +16,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,8 +37,7 @@
                 android:id="@+id/tvToolbarTitle"
                 style="@style/ScreenTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_height="wrap_content" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -46,18 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <WebView
-                android:id="@+id/webViewDataPrivacyAndTermsOfUse"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/progressDataPrivacyAndTermsOfUse"
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:indeterminateTint="@color/colorAccent" />
         </FrameLayout>
 
     </LinearLayout>

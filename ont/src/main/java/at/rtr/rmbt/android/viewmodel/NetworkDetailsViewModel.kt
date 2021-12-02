@@ -2,9 +2,9 @@ package at.rtr.rmbt.android.viewmodel
 
 import at.rtr.rmbt.android.ui.viewstate.NetworkDetailsViewState
 import at.specure.info.connectivity.ConnectivityInfoLiveData
-import at.specure.info.network.ActiveNetworkLiveData
 import at.specure.info.ip.IpV4ChangeLiveData
 import at.specure.info.ip.IpV6ChangeLiveData
+import at.specure.info.network.ActiveNetworkLiveData
 import at.specure.info.strength.SignalStrengthLiveData
 import at.specure.location.LocationWatcher
 import at.specure.util.permission.PermissionsWatcher

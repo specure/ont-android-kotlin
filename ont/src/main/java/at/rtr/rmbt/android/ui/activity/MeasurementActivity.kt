@@ -20,6 +20,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
+import androidx.core.content.res.ResourcesCompat
 import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.databinding.ActivityMeasurementBinding
 import at.rtr.rmbt.android.di.viewModelLazy
@@ -27,11 +28,12 @@ import at.rtr.rmbt.android.ui.dialog.SimpleDialog
 import at.rtr.rmbt.android.ui.fragment.BasicResultFragment
 import at.rtr.rmbt.android.ui.fragment.BasicResultFragment.DataLoadedListener
 import at.rtr.rmbt.android.ui.fragment.SimpleResultsListFragment
-import at.rtr.rmbt.android.util.TestUuidType
+import at.specure.test.TestUuidType
 import at.rtr.rmbt.android.util.listen
 import at.rtr.rmbt.android.viewmodel.MeasurementViewModel
 import at.specure.data.entity.LoopModeRecord
 import at.specure.data.entity.LoopModeState
+import at.specure.info.TransportType
 import at.specure.location.LocationState
 import at.specure.measurement.MeasurementState
 import timber.log.Timber
@@ -44,6 +46,7 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
     private val viewModel: MeasurementViewModel by viewModelLazy()
     private lateinit var binding: ActivityMeasurementBinding
     private var resultFragment: BasicResultFragment? = null
+    var loopMedianValuesReloadNeeded = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,6 +56,18 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
         setContentView(view)
 
         binding.state = viewModel.state
+
+        viewModel.connectivityInfoLiveData.listen(this) {
+            val imageDrawableId = when (it?.transportType) {
+                TransportType.WIFI -> R.drawable.image_home_wifi
+                TransportType.CELLULAR -> R.drawable.image_home_cellular
+                TransportType.ETHERNET -> R.drawable.image_home_ethernet
+                else -> R.drawable.image_home
+            }
+            binding.image.setImageDrawable(
+                ResourcesCompat.getDrawable(resources, imageDrawableId, applicationContext.theme)
+            )
+        }
 
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
@@ -134,10 +149,13 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
 
     private fun finishActivity(measurementFinished: Boolean) {
         if (measurementFinished) {
-            finish()
             if (viewModel.state.isLoopModeActive.get()) {
-                LoopFinishedActivity.start(this)
+                if (viewModel.state.loopModeRecord.get()?.status == LoopModeState.FINISHED || viewModel.state.loopModeRecord.get()?.status == LoopModeState.CANCELLED) {
+                    finish()
+                    LoopFinishedActivity.start(this)
+                }
             } else {
+                finish()
                 viewModel.testUUID?.let {
                     if (viewModel.state.measurementState.get() == MeasurementState.FINISH)
                         ResultsActivity.start(this, it, ResultsActivity.ReturnPoint.HOME)
@@ -147,7 +165,7 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
     }
 
     private fun cancelMeasurement() {
-        if (viewModel.state.isLoopModeActive.get()) {
+        if (viewModel.state.isLoopModeActive.get() && (viewModel.state.loopModeRecord.get()?.status == LoopModeState.FINISHED || viewModel.state.loopModeRecord.get()?.status == LoopModeState.CANCELLED)) {
             LoopFinishedActivity.start(this)
         } else {
             finishAffinity()
@@ -170,7 +188,6 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
                 viewModel.config.loopModeNumberOfTests
             )
         }
-
         binding.blockLoopWaiting.textNextDistance.text = viewModel.state.loopNextTestDistanceMeters.get()
         loopRecord?.status?.let { status ->
             when (status) {
@@ -183,6 +200,25 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
                 }
                 else -> {
                 } // do nothing
+            }
+        }
+
+        if (loopRecord?.testsPerformed != null && loopRecord.testsPerformed >= 2 && loopMedianValuesReloadNeeded) {
+            Timber.d("Loading median values on Loop record changed")
+            loopMedianValuesReloadNeeded = false
+            viewModel.initializeLoopData(loopRecord.localUuid)
+            val loopUUID = viewModel.state.loopModeRecord.get()?.uuid
+            Timber.d("Loop UUID to load median values (already loaded): $loopUUID")
+            loopUUID?.let {
+                viewModel.loadMedianValues(it, this)
+                if (!viewModel.medianLiveData.hasObservers()) {
+                    viewModel.medianLiveData.observe(this) { medians ->
+                        if (medians != null) {
+                            viewModel.state.setMedianValues(medians)
+                            Timber.d("median values: $medians")
+                        }
+                    }
+                }
             }
         }
 
@@ -229,6 +265,13 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
 
     override fun onStop() {
         super.onStop()
+
+        try {
+            viewModel.medianLiveData.removeObservers(this)
+        } catch (e: UninitializedPropertyAccessException) {
+            Timber.w(e.localizedMessage)
+        }
+
         viewModel.detach(this)
     }
 
@@ -238,6 +281,9 @@ class MeasurementActivity : BaseActivity(), SimpleDialog.Callback {
 
     override fun onResume() {
         super.onResume()
+        loopMedianValuesReloadNeeded = true
+        viewModel.loadMedianValues(viewModel.state.loopModeRecord.get()?.uuid, this)
+        Timber.d("Loop median uuid: ${viewModel.state.loopModeRecord.get()?.uuid}")
         Timber.d("MeasurementViewModel RESUME")
     }
 

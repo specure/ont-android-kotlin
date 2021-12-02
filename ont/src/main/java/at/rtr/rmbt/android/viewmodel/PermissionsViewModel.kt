@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import at.rtr.rmbt.android.config.AppConfig
 import at.rtr.rmbt.android.util.safeOffer
 import at.specure.util.permission.PermissionsWatcher
-import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
+import javax.inject.Inject
 
 class PermissionsViewModel @Inject constructor(private val permissionsWatcher: PermissionsWatcher, private val appConfig: AppConfig) :
     BaseViewModel() {
