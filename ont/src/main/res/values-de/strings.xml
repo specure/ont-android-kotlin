@@ -209,11 +209,6 @@
     <string name="map_label_map_appearance">Kartenansicht</string>
     <string name="title_marker_item_details">Mehr Details anzeigen</string>
 
-    <string name="map_search_location_dialog_title">Suche</string>
-    <string name="map_search_location_dialog_info">Suche nach einer Adresse oder Stadt:</string>
-    <string name="map_search_location_dialog_not_found">Adresse nicht gefunden.</string>
-    <string name="map_search_location_not_supported">Ihr Gerät unterstützt diese Funktion nicht.</string>
-
     <string name="text_failed_to_load_results">Daten konnten nicht geladen werden.\nZur Aktualisierung bitte nach unten ziehen.</string>
 
     <string name="title_sync">Synchronisieren</string>
@@ -236,8 +231,6 @@
     <string name="label_map_filters">Karten-Einstellugen</string>
     <string name="text_filter_confirm">übernehmen</string>
     <string name="text_filter_continue">Fortsetzen</string>
-    <string name="title_filters_type">Kartentyp</string>
-    <string name="title_filters_subtype">Einstellungen</string>
 
     <string name="graph_signal_value">-%1$s dBm</string>
     <string name="notification_loop_mode_title_active">Der Wiederholungsmodus ist aktiv</string>
@@ -320,11 +313,6 @@
     <string name="label_change_test_server">Testserver ändern</string>
     <string name="request_failure">Beim Abrufen der Daten ist ein Fehler aufgetreten.</string>
 
-    <string name="measurement">Messung</string>
-    <string name="label_measurement_ping_ms">Ping (ms)</string>
-    <string name="label_measurement_download_mbps">Herunterladen (Mbit/s)</string>
-    <string name="label_measurement_upload_mbps">Hochladen (Mbit/s)</string>
-    <string name="label_measurement_qos">QoS (%)</string>
     <string name="label_measurement_time_to_next_test">Zeit bis zum nächsten Test</string>
     <string name="label_measurement_movement">Bewegung</string>
 
@@ -343,5 +331,31 @@
     <string name="primary_connection">Primär</string>
     <string name="secondary_connection">Sekundär</string>
 
+    <string name="measurements">Messungen</string>
+    <string name="total_measurements">Gesamtmessungen</string>
+    <string name="average_down">Durchschnitt nach unten</string>
+    <string name="average_up">Durchschnitt nach oben</string>
+    <string name="average_latency">Durchschnittliche Latenz</string>
+
+    <string name="splash_text">Testen Sie die Geschwindigkeit Ihres Internets.</string>
+
+    <string name="label_information">Informationen</string>
+    <string name="label_tests">Tests</string>
+    <string name="label_succeeded">ERFOLGREICH</string>
+    <string name="label_failed">FEHLGESCHLAGEN</string>
+    <string name="label_description">BESCHREIBUNG</string>
+    <string name="label_detail">DETAILS</string>
+
+    <string name="map_style_hybrid">Hybrid</string>
+    <string name="map_style_satellite">Satellit</string>
+    <string name="map_style_standard">Standard</string>
+
+    <string name="search_tooltip">Suche nach Adresse, Gemeinde…</string>
+    <string name="filter_technology_all">Alle</string>
+    <string name="map_disclaimer">Die Karte zeigt Messungen an, die über die Akep-Apps durchgeführt wurden. Es ist keine Abdeckungskarte.</string>
+    <string name="text_no_persistent_client_uuid">Akep Nettest benötigt bestimmte Berechtigungen, um korrekt zu funktionieren</string>
+    <string name="text_link_no_persistent_client_uuid">Zu Datenschutzberechtigungen</string>
+    <string name="permissions">Berechtigungen</string>
+    <string name="median_values">Medianwerte</string>
 </resources>
 
