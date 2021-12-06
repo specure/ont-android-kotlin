@@ -8,6 +8,7 @@ import at.rmbt.util.Maybe
 import at.specure.config.Config
 import at.specure.data.ClientUUID
 import at.specure.data.ClientUUIDLegacy
+import at.specure.data.ClientUUIDLegacyONTV2
 import at.specure.data.ControlServerSettings
 import at.specure.data.HistoryFilterOptions
 import at.specure.data.MeasurementServers
@@ -29,6 +30,7 @@ class SettingsRepositoryImpl(
     private val controlServerClient: ControlServerClient,
     private val clientUUID: ClientUUID,
     private val clientUUIDLegacy: ClientUUIDLegacy,
+    private val clientUUIDLegacyONTV2: ClientUUIDLegacyONTV2,
     private val controlServerSettings: ControlServerSettings,
     private val termsAndConditions: TermsAndConditions,
     private val measurementsServers: MeasurementServers,
@@ -61,28 +63,35 @@ class SettingsRepositoryImpl(
     }
 
     private fun emitSettingsRequest(): Maybe<SettingsResponse> {
-        // for migration phase - reuse existing client uuid, if any
+        // for migration phase - reuse existing client uuid, if any (rtr, nkom)
         if (clientUUID.value == null && clientUUIDLegacy.value != null) {
             clientUUID.value = clientUUIDLegacy.value
         }
-//        Log.e("CLIENTUUID SR", "CLIENTUUID = ${clientUUID.value} vs CLIENTUUID LEGACY = ${clientUUIDLegacy.value}")
-        Timber.e("CLIENTUUID = ${clientUUID.value} vs ${clientUUIDLegacy.value}")
+        // migration for v2 ont based clients clients (akos, ekip, ont)
+        if (clientUUID.value == null && clientUUIDLegacyONTV2.value != null && !config.headerValue.isNullOrEmpty() && config.headerValue != "no") {
+            clientUUID.value = clientUUIDLegacyONTV2.value
+        }
+
+        Timber.d("CLIENTUUID = ${clientUUID.value} vs ${clientUUIDLegacy.value} vs ${clientUUIDLegacyONTV2.value}")
 
         if (!config.persistentClientUUIDEnabled) {
             clientUUID.value = null
         } else if ((clientUUIDLegacy.value != null) && !config.headerValue.isNullOrEmpty()) {
             // migrating old uuid to new uuid and get rid of legacy one to prevent repeated migrating of old uuid in case of not persistent uuid option chosen
-            clientUUID.value = clientUUIDLegacy.value
-            clientUUIDLegacy.value = null
+            if (config.headerValue == "no") {
+                clientUUID.value = clientUUIDLegacy.value
+                clientUUIDLegacy.value = null
+            } else {
+                clientUUID.value = clientUUIDLegacyONTV2.value
+                clientUUIDLegacy.value = null
+            }
         }
 
         val body = deviceInfo.toSettingsRequest(clientUUID, clientUUIDLegacy, config, termsAndConditions)
         // we must remove ipv4 url before we want to check settings, because settings request should go to the original URL
         controlServerSettings.controlServerV4Url = null
         controlServerSettings.controlServerV6Url = null
-//        Log.e("CLIENTUUID SR SETTINGS WHOLE REQUEST", "${body}}")
         val settings = controlServerClient.getSettings(body)
-//        Log.e("CLIENTUUID SR SETTINGS WHOLE RESPONSE", "${settings.success.settings}}")
         return settings
     }
 
