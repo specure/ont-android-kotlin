@@ -15,10 +15,8 @@
 package at.specure.data
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import at.specure.util.StringPreferenceLiveData
-import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,7 +28,7 @@ class ClientUUIDLegacyONTV2 @Inject constructor(context: Context) {
     private val preferences = context.getSharedPreferences(
         "at.specure.android.screens.preferences.PreferenceFragment.preferences_file",
         Context.MODE_PRIVATE
-    );
+    )
 
     val liveData: LiveData<String?>
         get() {
