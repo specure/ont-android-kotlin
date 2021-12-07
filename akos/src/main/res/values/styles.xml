@@ -70,18 +70,15 @@
 
     <!-- Roboto font style -->
     <style name="RobotoRegularStyle">
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="RobotoMediumStyle">
-        <item name="android:fontFamily">@font/roboto_medium</item>
-        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="RobotoBoldStyle">
-        <item name="android:fontFamily">@font/roboto_bold</item>
-        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="RobotoRegularStyle.VerySmall">
