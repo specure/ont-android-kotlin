@@ -1,7 +1,6 @@
 package at.rtr.rmbt.android.ui.dialog
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
