@@ -103,7 +103,6 @@ class BasicResultViewModel @Inject constructor(
                                 _loadingLiveData.postValue(it)
                             }
                     }
-
                 }
             }
             TestUuidType.LOOP_UUID ->

@@ -86,6 +86,5 @@ class ResultViewModel @Inject constructor(
                     _loadingLiveData.postValue(it)
                 }
         }
-
     }
 }
