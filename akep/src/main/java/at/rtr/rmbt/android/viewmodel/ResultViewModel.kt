@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import at.rmbt.util.exception.HandledException
 import at.rtr.rmbt.android.ui.viewstate.ResultViewState
+import at.specure.config.Config
 import at.specure.data.entity.QoeInfoRecord
 import at.specure.data.entity.QosCategoryRecord
 import at.specure.data.entity.TestResultDetailsRecord
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ResultViewModel @Inject constructor(
+    private val config: Config,
     private val testResultsRepository: TestResultsRepository
 ) : BaseViewModel() {
 
@@ -52,20 +54,37 @@ class ResultViewModel @Inject constructor(
     }
 
     fun loadTestResults() = launch {
-        testResultsRepository.loadTestResults(state.testUUID).zip(
-            testResultsRepository.loadTestDetailsResult(state.testUUID)
-        ) { a, b -> a && b }
-            .flowOn(Dispatchers.IO)
-            .catch {
-                if (it is HandledException) {
-                    emit(false)
-                    postError(it)
-                } else {
-                    throw it
+
+        if (config.headerValue.isEmpty()) {
+            testResultsRepository.loadTestResults(state.testUUID).zip(
+                testResultsRepository.loadTestDetailsResult(state.testUUID)
+            ) { a, b -> a && b }
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    if (it is HandledException) {
+                        emit(false)
+                        postError(it)
+                    } else {
+                        throw it
+                    }
                 }
-            }
-            .collect {
-                _loadingLiveData.postValue(it)
-            }
+                .collect {
+                    _loadingLiveData.postValue(it)
+                }
+        } else {
+            testResultsRepository.loadTestResults(state.testUUID)
+                .flowOn(Dispatchers.IO)
+                .catch {
+                    if (it is HandledException) {
+                        emit(false)
+                        postError(it)
+                    } else {
+                        throw it
+                    }
+                }
+                .collect {
+                    _loadingLiveData.postValue(it)
+                }
+        }
     }
 }

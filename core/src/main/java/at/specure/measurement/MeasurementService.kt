@@ -752,10 +752,14 @@ class MeasurementService : CustomLifecycleService(), CoroutineScope {
         when (testUUIDType) {
             TestUuidType.TEST_UUID -> launch {
                 delay(1000)
-                testResultsRepository.loadTestResults(testUUID).zip(
-                    testResultsRepository.loadTestDetailsResult(testUUID)
-                ) { a, b -> a && b }
-                    .flowOn(Dispatchers.IO)
+                if (config.headerValue.isEmpty()) {
+                    testResultsRepository.loadTestResults(testUUID).zip(
+                        testResultsRepository.loadTestDetailsResult(testUUID)
+                    ) { a, b -> a && b }
+                        .flowOn(Dispatchers.IO)
+                } else {
+                    testResultsRepository.loadTestResults(testUUID).flowOn(Dispatchers.IO)
+                }
             }
             TestUuidType.LOOP_UUID -> {
                 Timber.d("Starting to load Median values")
