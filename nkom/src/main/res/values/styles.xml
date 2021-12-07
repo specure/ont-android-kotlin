@@ -30,8 +30,7 @@
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="colorControlHighlight">@color/primaryRipple</item>
         <item name="android:windowDrawsSystemBarBackgrounds">false</item>
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="PreferenceTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -42,8 +41,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="colorControlHighlight">@color/primaryRipple</item>
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="MeasurementTheme" parent="AppTheme">
@@ -54,8 +52,7 @@
     <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:textColorPrimary">@color/colorAccent</item>
         <item name="colorControlNormal">#00000000</item>
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <!--  Splash screen theme -->
@@ -63,8 +60,7 @@
     <style name="SplashNoActionBarTheme" parent="AppTheme.NoActionBar">
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="NavigationButtonStyle">
@@ -73,8 +69,7 @@
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:scaleType">center</item>
         <item name="android:background">?selectableItemBackgroundBorderless</item>
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="ItemBackground" parent="android:Widget">
@@ -83,18 +78,15 @@
 
     <!-- Atten New font style -->
     <style name="AttenNewRegularStyle">
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="AttenNewMediumStyle">
-        <item name="fontFamily">@font/atten_new_medium</item>
-        <item name="android:fontFamily">@font/atten_new_medium</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AttenNewBoldStyle">
-        <item name="fontFamily">@font/atten_new_bold</item>
-        <item name="android:fontFamily">@font/atten_new_bold</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AttenNewRegularStyle.VerySmall">
@@ -158,8 +150,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowBackground">@null</item>
         <item name="colorControlHighlight">@color/primaryRipple</item>
-        <item name="fontFamily">@font/atten_new_regular</item>
-        <item name="android:fontFamily">@font/atten_new_regular</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="TextInputTheme" parent="AppTheme">
