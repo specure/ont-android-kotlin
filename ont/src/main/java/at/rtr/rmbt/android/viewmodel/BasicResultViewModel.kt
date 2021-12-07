@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import at.rmbt.util.exception.HandledException
 import at.rmbt.util.io
 import at.rtr.rmbt.android.ui.viewstate.BasicResultViewState
+import at.specure.config.Config
 import at.specure.data.HistoryLoopMedian
 import at.specure.data.entity.QoeInfoRecord
 import at.specure.data.entity.TestResultGraphItemRecord
@@ -23,6 +24,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class BasicResultViewModel @Inject constructor(
+    private val config: Config,
     private val testResultsRepository: TestResultsRepository,
     private val historyRepository: HistoryRepository
 ) : BaseViewModel() {
@@ -70,21 +72,38 @@ class BasicResultViewModel @Inject constructor(
                 val localServerResultsLoaded = localServerResults != null
                 Timber.d("Local test results loaded: $localServerResultsLoaded")
                 if (!localServerResultsLoaded) {
-                    testResultsRepository.loadTestResults(state.testUUID).zip(
-                        testResultsRepository.loadTestDetailsResult(state.testUUID)
-                    ) { a, b -> a && b }
-                        .flowOn(Dispatchers.IO)
-                        .catch {
-                            if (it is HandledException) {
-                                emit(false)
-                                postError(it)
-                            } else {
-                                throw it
+                    if (config.headerValue.isEmpty()) {
+                        testResultsRepository.loadTestResults(state.testUUID).zip(
+                            testResultsRepository.loadTestDetailsResult(state.testUUID)
+                        ) { a, b -> a && b }
+                            .flowOn(Dispatchers.IO)
+                            .catch {
+                                if (it is HandledException) {
+                                    emit(false)
+                                    postError(it)
+                                } else {
+                                    throw it
+                                }
                             }
-                        }
-                        .collect {
-                            _loadingLiveData.postValue(it)
-                        }
+                            .collect {
+                                _loadingLiveData.postValue(it)
+                            }
+                    } else {
+                        testResultsRepository.loadTestResults(state.testUUID)
+                            .flowOn(Dispatchers.IO)
+                            .catch {
+                                if (it is HandledException) {
+                                    emit(false)
+                                    postError(it)
+                                } else {
+                                    throw it
+                                }
+                            }
+                            .collect {
+                                _loadingLiveData.postValue(it)
+                            }
+                    }
+
                 }
             }
             TestUuidType.LOOP_UUID ->
