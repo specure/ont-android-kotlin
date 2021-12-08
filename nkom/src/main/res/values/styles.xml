@@ -1,0 +1,246 @@
+<!--
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+    <!-- Base application theme. -->
+
+    <!--  No ActionBar theme -->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/primaryRipple</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">false</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="PreferenceTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="colorControlHighlight">@color/primaryRipple</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="MeasurementTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.Picker" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/colorAccent</item>
+        <item name="colorControlNormal">#00000000</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--  Splash screen theme -->
+
+    <style name="SplashNoActionBarTheme" parent="AppTheme.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="NavigationButtonStyle">
+        <item name="android:theme">@style/ItemBackground</item>
+        <item name="android:minWidth">56dp</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:background">?selectableItemBackgroundBorderless</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ItemBackground" parent="android:Widget">
+        <item name="colorControlHighlight">@color/blackRipple</item>
+    </style>
+
+    <!-- Atten New font style -->
+    <style name="AttenNewRegularStyle">
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AttenNewMediumStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AttenNewBoldStyle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AttenNewRegularStyle.VerySmall">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AttenNewRegularStyle.SmallSmall">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="AttenNewRegularStyle.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AttenNewRegularStyle.MediumSmall">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="AttenNewRegularStyle.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AttenNewBoldStyle.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <!--<style name="AttenNewBoldStyle.Large">
+        <item name="android:textSize">20sp</item>
+    </style>-->
+
+    <!--<style name="AttenNewBoldStyle.ExtraLarge">
+        <item name="android:textSize">24sp</item>
+    </style>-->
+
+    <style name="AttenNewMediumStyle.VerySmall">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="AttenNewMediumStyle.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AttenNewMediumStyle.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AttenNewMediumStyle.Large">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="AttenNewMediumStyle.ExtraLarge">
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="RobotoMediumStyle.ExtraLarge.Dark" parent="AttenNewMediumStyle.ExtraLarge">
+        <item name="android:textColor">@color/text_dark_gray</item>
+    </style>
+
+    <style name="FullScreenDialogStyle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="colorControlHighlight">@color/primaryRipple</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TextInputTheme" parent="AppTheme">
+        <item name="colorPrimary">@android:color/holo_green_dark</item>
+    </style>
+
+    <style name="Text.MeasurementProgress" parent="AttenNewRegularStyle">
+        <item name="android:textSize">44sp</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
+
+    <style name="Text.MeasurementProgress.Phase" parent="AttenNewMediumStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="Text.MeasurementProgress.Units" parent="AttenNewMediumStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/dark</item>
+    </style>
+
+    <style name="ResultMainItemLabel" parent="AttenNewMediumStyle.VerySmall">
+        <item name="android:textColor">@color/shade_50</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="ScreenTitle" parent="AttenNewMediumStyle.Medium">
+        <item name="android:textColor">@color/text_dark_gray</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ResultMainItemMainValue" parent="AttenNewMediumStyle.ExtraLarge">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ResultMainItemValue" parent="AttenNewMediumStyle.Medium">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="ResultMainItemUnit" parent="AttenNewMediumStyle.Small">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Text.ResultListValue" parent="AttenNewRegularStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
+
+    <style name="Text.ResultListDate" parent="AttenNewMediumStyle">
+        <item name="android:textSize">11sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Text.ResultListHeader" parent="AttenNewMediumStyle">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Text.NetworkInfoSlider.Title" parent="AttenNewRegularStyle">
+        <item name="textAllCaps">true</item>
+        <item name="android:alpha">0.5</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0.03</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="Text.NetworkInfoSlider.Value" parent="AttenNewMediumStyle.Medium">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_darkest_gray</item>
+    </style>
+
+    <style name="Text.NetworkInfoSlider.ServerValue" parent="AttenNewRegularStyle">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+
+    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_corners_top</item>
+    </style>
+
+    <style name="MeasurementValueLabel" parent="AttenNewMediumStyle.Small">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+</resources>

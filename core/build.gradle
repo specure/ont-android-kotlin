@@ -1,0 +1,92 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-parcelize'
+apply plugin: 'kotlin-kapt'
+
+apply from: "$project.rootDir/tools/script-lint.gradle"
+apply from: "$project.rootDir/tools/script-ktlint.gradle"
+apply from: "$project.rootDir/tools/utils.gradle"
+
+android {
+
+    compileSdkVersion config.targetSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GIT_VERSION_NAME", "\"${gitVersionName()}\""
+        buildConfigField "String", "GIT_BRANCH_NAME", "\"${gitBranchName()}\""
+        buildConfigField "String", "GIT_FULL_HASH", "\"${gitFullHash()}\""
+        buildConfigField "int", "GIT_VERSION_CODE", gitVersionCode()
+        buildConfigField "boolean", "GIT_IS_DIRTY", gitIsDirty()
+        buildConfigField "int", "VERSION_CODE", "${versionCode}"
+        buildConfigField "String", "VERSION_NAME", "\"${versionName}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api project(path: ':cms_client')
+    api project(path: ':control_client')
+    api project(path: ':rmbt-client')
+
+    api project(path: ':location')
+    api project(path: ':netmonster_core:library')
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$versions.kotlin"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+    implementation "net.danlew:android.joda:$versions.joda_time"
+
+    implementation "androidx.appcompat:appcompat:$versions.appcompat"
+    implementation "androidx.work:work-runtime-ktx:$versions.work_manager"
+    api "androidx.paging:paging-runtime-ktx:$versions.paging"
+    implementation "androidx.lifecycle:lifecycle-service:$versions.lifecycle_service"
+
+    api "androidx.room:room-runtime:$versions.room"
+    implementation "androidx.room:room-ktx:$versions.room"
+
+    kapt "androidx.room:room-compiler:$versions.room"
+
+    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+    kapt "com.google.dagger:dagger-android-processor:$versions.dagger"
+
+    implementation "com.google.dagger:dagger:$versions.dagger"
+    implementation "com.google.dagger:dagger-android-support:$versions.dagger"
+
+    implementation "com.jakewharton.timber:timber:$versions.timber"
+
+    implementation "com.google.code.gson:gson:$versions.gson"
+
+    api  "io.noties.markwon:core:$versions.markwon"
+    api  "io.noties.markwon:ext-strikethrough:$versions.markwon"
+    api  "io.noties.markwon:ext-tables:$versions.markwon"
+    api  "io.noties.markwon:html:$versions.markwon"
+    api  "io.noties.markwon:image:$versions.markwon"
+    api  "io.noties.markwon:linkify:$versions.markwon"
+
+    testImplementation "junit:junit:$versions.junit"
+
+    androidTestImplementation "androidx.test:runner:$versions.test_runner"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.espresso_core"
+    androidTestImplementation "androidx.room:room-testing:$versions.room"
+}
+
+task dokkaMarkdown(type: org.jetbrains.dokka.gradle.DokkaTask) {
+    outputFormat = 'gfm'
+    outputDirectory = "$project.rootDir/build_results/markdown"
+}

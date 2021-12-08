@@ -1,0 +1,130 @@
+applyIfExists "$project.rootDir/private/project-dependencies.gradle"
+
+buildscript {
+
+    /**
+     * Checks that private files are available
+     */
+    ext.isPrivate = file("$project.rootDir/private/project-dependencies.gradle").exists()
+
+    /**
+     * Applies file from private directory (if dir exists) or public analog with the same path
+     */
+    ext.applyPrivate = { filePath ->
+        if (isPrivate) {
+            apply from: "$project.rootDir/private/$filePath"
+        } else {
+            apply from: "$project.rootDir/$filePath"
+        }
+    }
+
+    /**
+     * Applies file if it exists
+     */
+    ext.applyIfExists = { filePath ->
+        if (file(filePath).exists()) {
+            apply from: filePath
+        }
+    }
+
+    /**
+     * Applies dependencies for the root gradle file (applies for whole project)
+     */
+    ext.applyDependencies = { closure ->
+        if (file("$project.rootDir/private/project-dependencies.gradle").exists()) {
+            apply from: "$project.rootDir/private/project-dependencies.gradle"
+            applyPrivateDependencies(closure)
+        }
+    }
+
+    /**
+     * Returns git commit hash
+     */
+    ext.getGitHash = { ->
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-parse', '--short', 'HEAD'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+
+    /**
+     * Returns command output for "git describe --tags --always" (version name from git tag)
+     */
+    ext.gitVersionName = {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'describe', '--tags', '--always'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+
+    /**
+     * Returns current git branch name
+     */
+    ext.gitBranchName = {
+        def stdoutBranch = new ByteArrayOutputStream()
+
+        exec {
+            commandLine 'git', 'symbolic-ref', '--short', 'HEAD'
+            standardOutput = stdoutBranch
+            // git symbolic-ref fails if HEAD is detached
+            ignoreExitValue true
+
+        }
+        return stdoutBranch.toString().trim()
+    }
+
+    /**
+     * Returns git commit full hash
+     */
+    ext.gitFullHash = {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine "git", "log", "--pretty=format:'%h'", "-n 1"
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+
+    /**
+     * returns "git rev-list HEAD --count" command result
+     */
+    ext.gitVersionCode = {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            commandLine 'git', 'rev-list', 'HEAD', '--count'
+            standardOutput = stdout
+        }
+        return stdout.toString().trim()
+    }
+
+    /**
+     * Returns true if git has untracked or modified files
+     */
+    ext.gitIsDirty = {
+        def stdout = new ByteArrayOutputStream()
+        exec {
+            // git list all "dirty" (untracked, modified) files
+            commandLine 'git', 'status', '--porcelain'
+            standardOutput = stdout
+        }
+        //if there are any files, git is "dirty"
+        if (stdout.toString().length() > 0)
+            return "true"
+        else
+            return "false"
+    }
+
+    /**
+     * Extracts release notes from console build arguments sample "-PreleaseNotes="${RELEASE_NOTES}""
+     */
+    ext.buildNotes = {
+        if (project.hasProperty('releaseNotes') && releaseNotes.length() > 0) {
+            return releaseNotes
+        }
+        return ""
+    }
+}
