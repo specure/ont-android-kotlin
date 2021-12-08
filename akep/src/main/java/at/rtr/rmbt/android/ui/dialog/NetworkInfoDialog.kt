@@ -1,7 +1,6 @@
 package at.rtr.rmbt.android.ui.dialog
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.location.Geocoder
 import android.os.Bundle
@@ -19,7 +18,6 @@ import at.rmbt.client.control.IpProtocol
 import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.databinding.DialogNetworkInfoBinding
 import at.rtr.rmbt.android.di.Injector
-import at.rtr.rmbt.android.ui.activity.MeasurementServerSelectionActivity
 import at.rtr.rmbt.android.ui.adapter.ICellAdapter
 import at.rtr.rmbt.android.ui.adapter.WifiAdapter
 import at.rtr.rmbt.android.util.formatAccuracy
@@ -137,7 +135,7 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
     private fun observeMeasurementServers() {
         binding.textServer.text = measurementServers.selectedMeasurementServer?.name
         binding.groupServer.visibility = if (!measurementServers.measurementServers.isNullOrEmpty()) View.VISIBLE else View.GONE
-        binding.linkServer.setOnClickListener { startActivity(Intent(requireContext(), MeasurementServerSelectionActivity::class.java)) }
+        binding.linkServer.setOnClickListener { }
     }
 
     private fun observeIp() {

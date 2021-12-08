@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-import androidx.core.content.res.ResourcesCompat
 import at.rtr.rmbt.android.R
 import at.rtr.rmbt.android.util.calcTextHeight
 import at.rtr.rmbt.android.util.calcTextWidth
@@ -55,11 +54,8 @@ open class LineChart @JvmOverloads constructor(
 
         gridDottedLinePath = Path()
 
-        val robotoRegularTypeface = ResourcesCompat.getFont(context, R.font.roboto_regular)
-
         yLabelPaint = Paint()
         yLabelPaint.isAntiAlias = true
-        yLabelPaint.typeface = robotoRegularTypeface
         yLabelPaint.textSize =
             typedArray.getDimension(R.styleable.LineChart_ylabel_text_size, context.resources.getDimension(R.dimen.chart_label_text_size))
         yLabelPaint.textAlign = Paint.Align.LEFT
@@ -67,7 +63,6 @@ open class LineChart @JvmOverloads constructor(
 
         xLabelPaint = Paint()
         xLabelPaint.isAntiAlias = true
-        xLabelPaint.typeface = robotoRegularTypeface
         xLabelPaint.textSize =
             typedArray.getDimension(R.styleable.LineChart_xlabel_text_size, context.resources.getDimension(R.dimen.chart_label_text_size))
         xLabelPaint.color = typedArray.getColor(R.styleable.LineChart_xlabel_color, context.getColor(R.color.chart_labels_color))
