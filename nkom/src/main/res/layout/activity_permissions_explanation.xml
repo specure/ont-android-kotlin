@@ -123,6 +123,17 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/permission_title_second" />
 
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/permission_text_third"
+                        style="@style/Text.NetworkInfoSlider.Value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_large"
+                        android:text="@string/location_permissions_disclaimer"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/permission_text_second" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
