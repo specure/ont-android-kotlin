@@ -364,4 +364,5 @@
     <string name="municipalities">Municipality</string>
     <string name="counties">County</string>
 
+    <string name="location_permissions_disclaimer">Nettfart mobile collects location data to enable location metadata related to a single measurement or a series of measurements in a loop mode even when the app is closed or not in use.</string>
 </resources>

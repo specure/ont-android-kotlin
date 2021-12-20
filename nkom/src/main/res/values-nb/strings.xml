@@ -365,4 +365,6 @@
     <string name="municipalities">Kommune</string>
     <string name="counties">Fylke</string>
 
+    <string name="location_permissions_disclaimer">Nettfart mobil samler inn stedsdata for å aktivere metadata knyttet til en enkelt måling eller en serie målinger i en loop-modus selv når appen er lukket eller ikke er i bruk.</string>
+
 </resources>
