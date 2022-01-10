@@ -71,9 +71,6 @@ class MapTimelineFilterDialog : FullscreenDialog(), MapFiltersConfirmationDialog
             }
         }
 
-        viewModel.filterSelectedYear = viewModel.yearList[0]
-        viewModel.filterSelectedMonth = viewModel.monthNumbersForYearHashMap[viewModel.filterSelectedYear]!![0] + 1
-
         binding.monthPicker.apply {
             displayedValues = displayedValuesT
             maxValue = maxValueT
@@ -112,26 +109,17 @@ class MapTimelineFilterDialog : FullscreenDialog(), MapFiltersConfirmationDialog
     private fun updateMonthPickerList(newVal: Int, oldVal: Int) {
         val selectedYear = viewModel.yearList[newVal]
         Timber.d("Old picked value: ${binding.monthPicker.value}    new set: ${viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1}")
-        if (newVal > oldVal) {
-            binding.monthPicker.apply {
-                minValue = 0
-                maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
-                displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
-                value = minValue
-                wrapSelectorWheel = false
-                showDividers = SHOW_DIVIDER_NONE
-            }
-        } else {
-            binding.monthPicker.apply {
-                value = 0
-                displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
-                maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
-                minValue = 0
-                wrapSelectorWheel = false
-                showDividers = SHOW_DIVIDER_NONE
-            }
+
+        binding.monthPicker.apply {
+            value = 0
+            minValue = 0
+            maxValue = 0
+            displayedValues = viewModel.monthDisplayForYearHashMap[selectedYear]?.toTypedArray() ?: listOf<String>().toTypedArray()
+            maxValue = viewModel.monthNumbersForYearHashMap[selectedYear]!!.size - 1
+            wrapSelectorWheel = false
+            showDividers = SHOW_DIVIDER_NONE
         }
-    }
+}
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

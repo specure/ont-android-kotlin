@@ -24,7 +24,7 @@ class FilterValuesStorage @Inject constructor() {
     private var technology: Map<MapFilterType, List<FilterTechnologyOptionResponse>> = EnumMap(MapFilterType::class.java)
     private var operator: Map<MapFilterType, List<FilterOperatorOptionResponse>> = EnumMap(MapFilterType::class.java)
     private var provider: Map<MapFilterType, List<FilterProviderOptionResponse>> = EnumMap(MapFilterType::class.java)
-    private var time: Pair<Int, Int> = Calendar.getInstance().getCurrentLatestFinishedMonth()
+    private var time: Pair<Int, Int> = Calendar.getInstance().getCurrentMapFilterMonth()
 
     var titleSubtype: String = ""
     var titleStatistics: String = ""
@@ -113,7 +113,7 @@ class FilterValuesStorage @Inject constructor() {
      * Month-Year (month is 1 - based)
      */
     fun findTimeDefault(): String {
-        val currentMonth = Calendar.getInstance().getCurrentLatestFinishedMonth()
+        val currentMonth = Calendar.getInstance().getCurrentMapFilterMonth()
         return "${currentMonth.first}-${currentMonth.second}"
     }
 
