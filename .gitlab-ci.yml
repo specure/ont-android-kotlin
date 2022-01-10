@@ -178,6 +178,7 @@ distribution:build-rtr:
     name: "local-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-ont:
   stage: distribution
@@ -194,6 +195,7 @@ distribution:build-ont:
     name: "ont-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-akep:
   stage: distribution
@@ -210,6 +212,7 @@ distribution:build-akep:
     name: "akep-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-akos:
   stage: distribution
@@ -226,6 +229,7 @@ distribution:build-akos:
     name: "akos-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-nkom:
   stage: distribution
@@ -242,6 +246,7 @@ distribution:build-nkom:
     name: "nkom-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:docs:
   stage: distribution
@@ -255,6 +260,7 @@ distribution:docs:
     paths:
       - build_results/javadoc
       - build_results/markdown
+    expire_in: 1 month
 
 distribution:tag:
   stage: gitTag

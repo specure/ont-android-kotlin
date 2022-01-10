@@ -8,7 +8,7 @@ import at.rmbt.client.control.data.MapPresentationType
 import at.rmbt.client.control.data.MapStyleType
 import at.rtr.rmbt.android.ui.fragment.START_ZOOM_LEVEL
 import at.specure.util.formatYearMonthForDisplay
-import at.specure.util.getCurrentLatestFinishedMonth
+import at.specure.util.getCurrentMapFilterMonth
 import com.mapbox.mapboxsdk.geometry.LatLng
 import java.util.Calendar
 
@@ -28,7 +28,7 @@ class MapViewState : ViewState {
 
     var coordinatesLiveData: MutableLiveData<LatLng> = MutableLiveData()
     var cameraPositionLiveData: MutableLiveData<LatLng> = MutableLiveData()
-    var filterCurrentMonthAndYear: ObservableField<String> = ObservableField(Calendar.getInstance().getCurrentLatestFinishedMonth().formatYearMonthForDisplay())
+    var filterCurrentMonthAndYear: ObservableField<String> = ObservableField(Calendar.getInstance().getCurrentMapFilterMonth().formatYearMonthForDisplay())
 
     val type = ObservableField<MapPresentationType>(MapPresentationType.AUTOMATIC)
     val style = ObservableField<MapStyleType>(MapStyleType.STANDARD)
