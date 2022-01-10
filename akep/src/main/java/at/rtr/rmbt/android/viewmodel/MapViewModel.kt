@@ -14,7 +14,7 @@ import at.specure.location.LocationInfo
 import at.specure.location.LocationState
 import at.specure.location.LocationWatcher
 import at.specure.util.formatForFilter
-import at.specure.util.getCurrentLatestFinishedMonth
+import at.specure.util.getCurrentMapFilterMonth
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -81,7 +81,7 @@ class MapViewModel @Inject constructor(
     }
 
     private fun obtainFilters(): List<String?> {
-        val filterList = mutableListOf(null, null, null, TechnologyFilter.FILTER_ALL.filterValue, null, null, null, Calendar.getInstance().getCurrentLatestFinishedMonth().formatForFilter())
+        val filterList = mutableListOf(null, null, null, TechnologyFilter.FILTER_ALL.filterValue, null, null, null, Calendar.getInstance().getCurrentMapFilterMonth().formatForFilter())
         filterTechnology = TechnologyFilter.FILTER_ALL
         try {
             val technologyFilter = repository.active.technology

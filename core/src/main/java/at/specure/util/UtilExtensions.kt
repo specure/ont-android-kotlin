@@ -39,8 +39,8 @@ inline fun <T> Iterable<T>.synchronizedForEach(action: (T) -> Unit) {
 fun Calendar.getCurrentMapFilterMonth(): Pair<Int, Int> {
     val currentMonth = this.get(Calendar.MONTH)
     val currentMonthDay = this.get(Calendar.DAY_OF_MONTH)
-    return  if (currentMonthDay == 1) {
-        if (currentMonth == Calendar.JANUARY)  {
+    return if (currentMonthDay == 1) {
+        if (currentMonth == Calendar.JANUARY) {
             Pair(Calendar.DECEMBER + 1, this.get(Calendar.YEAR) - 1)
         } else {
             Pair(currentMonth, this.get(Calendar.YEAR))
