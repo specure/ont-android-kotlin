@@ -83,7 +83,14 @@ fun Paint.calcTextHeight(demoText: String): Float {
 /**
  * This function is used for format value up-to 2 decimal
  */
-fun Float.format(): String = DecimalFormat("###.##").format(this)
+fun Float.format(): String {
+   return when {
+       this < 1.0 -> DecimalFormat("###.###").format(this)
+       this < 10.0 -> DecimalFormat("###.##").format(this)
+       this < 100.0 -> DecimalFormat("###.#").format(this)
+       else -> DecimalFormat("###").format(this)
+   }
+}
 
 /**
  * This function is used for format value up-to 2 decimal
