@@ -1,3 +1,5 @@
+image: openjdk:11-jdk
+
 variables:
   GIT_SUBMODULE_STRATEGY: recursive
   VERSION_LAST_INCREASE: 0
