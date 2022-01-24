@@ -220,6 +220,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, MapMarkerDetailsAdapter.
         when (filterType) {
             TechnologyFilter.FILTER_ALL,
             TechnologyFilter.FILTER_5G -> (selectedView as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.text_lightest_gray))
+            else -> {}
         }
     }
 

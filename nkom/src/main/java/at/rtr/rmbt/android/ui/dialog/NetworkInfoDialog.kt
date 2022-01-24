@@ -252,6 +252,7 @@ class NetworkInfoDialog : BottomSheetDialogFragment() {
                         binding.groupCellInfo?.visibility = View.GONE
                     }
                 }
+                else -> {}
             }
         }
     }

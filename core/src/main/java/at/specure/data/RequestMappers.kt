@@ -267,6 +267,7 @@ fun TestRecord.toRequest(
             NRConnectionState.AVAILABLE -> if (best5GTechnologyAchieved == null) {
                 best5GTechnologyAchieved = NRConnectionState.AVAILABLE
             }
+            else -> best5GTechnologyAchieved = null
         }
     }
 

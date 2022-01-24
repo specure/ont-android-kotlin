@@ -510,7 +510,6 @@ class SignalMeasurementProcessor @Inject constructor(
         chunk?.id?.let { measurementRepository.saveTelephonyInfo(it) }
     }
 
-    @ExperimentalCoroutinesApi
     override fun newUUIDSent(respondedUuid: String, info: SignalMeasurementInfo) {
         val network = networkInfo
         network?.let {
