@@ -102,8 +102,8 @@ class NotificationProviderImpl(private val context: Context) : NotificationProvi
         val totalProgress = if (skipQoSTests) 500 else 600
         val progressIntermediate = ((stateProgress + progress) / totalProgress.toFloat()) * 100
 
-        val intent = PendingIntent.getActivity(context, 0, Intent(context, MeasurementActivity::class.java), 0)
-        val actionIntent = PendingIntent.getService(context, 0, cancellationIntent, 0)
+        val intent = PendingIntent.getActivity(context, 0, Intent(context, MeasurementActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+        val actionIntent = PendingIntent.getService(context, 0, cancellationIntent, PendingIntent.FLAG_IMMUTABLE)
         val action = NotificationCompat.Action.Builder(0, context.getString(R.string.text_cancel_measurement), actionIntent).build()
         loopCountdownNotification = null
         if (measurementRunningNotification == null) {
@@ -153,8 +153,8 @@ class NotificationProviderImpl(private val context: Context) : NotificationProvi
             testsCount
         )
 
-        val intent = PendingIntent.getActivity(context, 0, Intent(context, MeasurementActivity::class.java), 0)
-        val actionIntent = PendingIntent.getService(context, 0, cancellationIntent, 0)
+        val intent = PendingIntent.getActivity(context, 0, Intent(context, MeasurementActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+        val actionIntent = PendingIntent.getService(context, 0, cancellationIntent, PendingIntent.FLAG_IMMUTABLE)
         val action = NotificationCompat.Action.Builder(0, context.getString(R.string.text_cancel_measurement), actionIntent).build()
 
         measurementRunningNotification = null
@@ -177,8 +177,8 @@ class NotificationProviderImpl(private val context: Context) : NotificationProvi
     }
 
     override fun signalMeasurementService(stopMeasurementIntent: Intent): Notification {
-        val intent = PendingIntent.getActivity(context, 0, Intent(context, HomeActivity::class.java), 0)
-        val actionIntent = PendingIntent.getService(context, 0, stopMeasurementIntent, 0)
+        val intent = PendingIntent.getActivity(context, 0, Intent(context, HomeActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+        val actionIntent = PendingIntent.getService(context, 0, stopMeasurementIntent, PendingIntent.FLAG_IMMUTABLE)
         val action = NotificationCompat.Action.Builder(0, context.getString(R.string.text_stop_measurement), actionIntent).build()
 
         return NotificationCompat.Builder(context, measurementChannelId())
@@ -194,7 +194,7 @@ class NotificationProviderImpl(private val context: Context) : NotificationProvi
     }
 
     override fun loopModeFinishedNotification(): Notification {
-        val intent = PendingIntent.getActivity(context, 0, Intent(context, LoopFinishedActivity::class.java), 0)
+        val intent = PendingIntent.getActivity(context, 0, Intent(context, LoopFinishedActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
 
         return NotificationCompat.Builder(context, measurementChannelId())
             .extend(clearActionsNotificationExtender)

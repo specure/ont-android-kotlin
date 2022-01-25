@@ -146,6 +146,7 @@ BasicResultFragment : BaseFragment() {
                 when (type) {
                     TestResultGraphItemRecord.Type.DOWNLOAD -> viewModel.state.downloadGraphData = it
                     TestResultGraphItemRecord.Type.UPLOAD -> viewModel.state.uploadGraphData = it
+                    else -> {}
                 }
                 showGraphItems(type)
             }

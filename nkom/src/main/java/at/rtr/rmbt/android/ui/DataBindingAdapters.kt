@@ -224,6 +224,7 @@ fun AppCompatImageView.setTechnologyIcon(networkInfo: NetworkInfo?) {
             CellTechnology.CONNECTION_5G -> {
                 setImageResource(R.drawable.ic_5g)
             }
+            else -> setImageDrawable(null)
         }
     } else {
         visibility = View.GONE
