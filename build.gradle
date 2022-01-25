@@ -65,16 +65,4 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-tasks.whenTaskAdded { task ->
-    if (task.name.endsWith("Manifest")) {
-        task.dependsOn 'copyGoogleServicesJson'
-    }
-    if (task.name.endsWith("ManifestForPackage")) {
-        task.dependsOn 'copyGoogleServicesJson'
-    }
-    if (task.name.contains("extractDeepLinks")) {
-        task.dependsOn 'copyGoogleServicesJson'
-    }
-}
-
 apply from: "$project.rootDir/tools/dokka.gradle" 
