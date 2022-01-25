@@ -1,6 +1,13 @@
-image: openjdk:11-jdk
+image: inovex/gitlab-ci-android
+#image: openjdk:11-jdk
+
+cache:
+  key: ${CI_PROJECT_ID}
+  paths:
+    - .gradle/
 
 variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   GIT_SUBMODULE_STRATEGY: recursive
   VERSION_LAST_INCREASE: 0
   VERSION_MAJOR: 4
@@ -17,6 +24,7 @@ before_script:
   - echo $JAVA_HOME
   - echo $ANDROID_HOME
   - echo $PATH
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
   - chmod +x ./gradlew
   - export VERSION_PATCH=$((BUILD_NUMBER-VERSION_LAST_INCREASE))
   - export VERSION_CODE=$(( (((VERSION_MAJOR*1000000)+(VERSION_MINOR*10000)+VERSION_PATCH))*10))
