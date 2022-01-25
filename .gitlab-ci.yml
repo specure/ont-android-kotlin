@@ -21,10 +21,11 @@ before_script:
   - git config --global user.email '${CI_USER_EMAIL}'
   - git config --global user.name '${CI_USER_NAME}'
   - git submodule update --init --recursive
+  - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
   - echo $JAVA_HOME
   - echo $ANDROID_HOME
   - echo $PATH
-  - export GRADLE_USER_HOME=$(pwd)/.gradle
   - chmod +x ./gradlew
   - export VERSION_PATCH=$((BUILD_NUMBER-VERSION_LAST_INCREASE))
   - export VERSION_CODE=$(( (((VERSION_MAJOR*1000000)+(VERSION_MINOR*10000)+VERSION_PATCH))*10))
