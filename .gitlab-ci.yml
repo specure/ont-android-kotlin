@@ -1,14 +1,22 @@
+image: inovex/gitlab-ci-android
+
 variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
   GIT_SUBMODULE_STRATEGY: recursive
   VERSION_LAST_INCREASE: 0
   VERSION_MAJOR: 4
   VERSION_MINOR: 0
+  ANDROID_COMPILE_SDK: "31"
+  ANDROID_BUILD_TOOLS: "32.0.0"
+  ANDROID_SDK_ROOT: "/opt/android-sdk-linux"
 
 before_script:
   - git remote set-url origin https://${CI_USER}:${CI_PUSH_TOKEN}@${GITLAB_HOST_URL}/android/nettest.git
   - git config --global user.email '${CI_USER_EMAIL}'
   - git config --global user.name '${CI_USER_NAME}'
   - git submodule update --init --recursive
+  - export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
   - echo $JAVA_HOME
   - echo $ANDROID_HOME
   - echo $PATH
@@ -178,6 +186,7 @@ distribution:build-rtr:
     name: "local-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-ont:
   stage: distribution
@@ -194,6 +203,7 @@ distribution:build-ont:
     name: "ont-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-akep:
   stage: distribution
@@ -210,6 +220,7 @@ distribution:build-akep:
     name: "akep-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-akos:
   stage: distribution
@@ -226,6 +237,7 @@ distribution:build-akos:
     name: "akos-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
 distribution:build-nkom:
   stage: distribution
@@ -242,19 +254,21 @@ distribution:build-nkom:
     name: "nkom-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
     paths:
       - app/build/outputs
+    expire_in: 1 month
 
-distribution:docs:
-  stage: distribution
-  interruptible: true
-  script:
-    - ./gradlew dokka dokkaMarkdown
-  only:
-    - develop
-  artifacts:
-    name: "docs-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
-    paths:
-      - build_results/javadoc
-      - build_results/markdown
+#distribution:docs:
+#  stage: distribution
+#  interruptible: true
+#  script:
+#    - ./gradlew dokka dokkaMarkdown
+#  only:
+#    - develop
+#  artifacts:
+#    name: "docs-$VERSION_NAME-$CI_COMMIT_REF_SLUG-$CI_COMMIT_SHORT_SHA"
+#    paths:
+#      - build_results/javadoc
+#      - build_results/markdown
+#    expire_in: 1 month
 
 distribution:tag:
   stage: gitTag

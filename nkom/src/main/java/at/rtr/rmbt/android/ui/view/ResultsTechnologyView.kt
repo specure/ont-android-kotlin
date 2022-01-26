@@ -39,6 +39,7 @@ class ResultsTechnologyView @JvmOverloads constructor(
                 }
                 NetworkTypeCompat.TYPE_5G_NSA,
                 NetworkTypeCompat.TYPE_5G -> addMobile(context.getString(R.string.technology_5g))
+                else -> {}
             }
             field = value
             invalidate()

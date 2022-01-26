@@ -14,19 +14,17 @@ import at.specure.location.LocationInfo
 import at.specure.location.LocationState
 import at.specure.location.LocationWatcher
 import at.specure.util.formatForFilter
-import at.specure.util.getCurrentLatestFinishedMonth
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.mapbox.mapboxsdk.geometry.LatLng
-import okhttp3.Callback
 import okhttp3.Call
-import okhttp3.Response
+import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.Response
 import timber.log.Timber
 import java.io.IOException
 import java.util.Locale
-import java.util.Calendar
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(
@@ -71,6 +69,7 @@ class MapViewModel @Inject constructor(
     init {
         currentProvider = basicProviderList[0]
         addStateSaveHandler(state)
+        setTimeFilter(repository.getTimeSelected().second, repository.getTimeSelected().first)
         obtainProviders()
     }
 
@@ -81,7 +80,7 @@ class MapViewModel @Inject constructor(
     }
 
     private fun obtainFilters(): List<String?> {
-        val filterList = mutableListOf(null, null, null, TechnologyFilter.FILTER_ALL.filterValue, null, null, null, Calendar.getInstance().getCurrentLatestFinishedMonth().formatForFilter())
+        val filterList = mutableListOf(null, null, null, TechnologyFilter.FILTER_ALL.filterValue, null, null, null, repository.getTimeSelected().formatForFilter())
         filterTechnology = TechnologyFilter.FILTER_ALL
         try {
             val technologyFilter = repository.active.technology

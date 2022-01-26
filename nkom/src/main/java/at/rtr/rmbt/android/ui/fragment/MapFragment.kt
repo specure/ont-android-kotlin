@@ -220,6 +220,7 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, MapMarkerDetailsAdapter.
         when (filterType) {
             TechnologyFilter.FILTER_ALL,
             TechnologyFilter.FILTER_5G -> (selectedView as TextView).setTextColor(ContextCompat.getColor(requireContext(), R.color.text_lightest_gray))
+            else -> {}
         }
     }
 
@@ -283,12 +284,35 @@ class MapFragment : BaseFragment(), OnMapReadyCallback, MapMarkerDetailsAdapter.
     }
 
     private fun showBottomSheetPopup(feature: Feature, currentLayerPrefix: String?) {
-        val regionType = if (mapboxMap!!.cameraPosition.zoom <= 5) "County" else "Municipality"
+        val zoom = mapboxMap!!.cameraPosition.zoom
+        val regionType = when {
+            zoom <= 5 -> getString(R.string.counties)
+            zoom <= 7.5 -> getString(R.string.municipalities)
+            else -> null
+        }
+
         val bottomSheetDialog = BottomSheetDialog(requireContext())
         bottomSheetDialog.setContentView(R.layout.bottomsheet_dialog_map_popup)
-        bottomSheetDialog.findViewById<TextView>(R.id.regionType)?.text = regionType
-        bottomSheetDialog.findViewById<TextView>(R.id.name)?.text =
-            feature.getProperty("NAME")?.asString
+        val regionTextView = bottomSheetDialog.findViewById<TextView>(R.id.regionType)
+        val regionNameTextView = bottomSheetDialog.findViewById<TextView>(R.id.name)
+        val divider = bottomSheetDialog.findViewById<View>(R.id.divider2)
+
+        regionType?.let {
+            regionTextView?.text = regionType
+        }
+        Timber.d("region type: $regionType")
+        if (regionType.isNullOrEmpty()) {
+            Timber.d("region type hiding: $regionType")
+            regionTextView?.visibility = View.GONE
+            regionNameTextView?.visibility = View.GONE
+            divider?.visibility = View.GONE
+        } else {
+            regionTextView?.visibility = View.VISIBLE
+            regionNameTextView?.visibility = View.VISIBLE
+            divider?.visibility = View.VISIBLE
+        }
+
+        regionNameTextView?.text = feature.getProperty("NAME")?.asString
         bottomSheetDialog.findViewById<TextView>(R.id.totalMeasurements)?.text =
             feature.getProperty("$currentLayerPrefix-COUNT")?.toString() ?: "0"
         bottomSheetDialog.findViewById<TextView>(R.id.averageDown)?.text = String.format(

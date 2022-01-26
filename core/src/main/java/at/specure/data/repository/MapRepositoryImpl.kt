@@ -31,7 +31,7 @@ import at.specure.data.toModelList
 import at.specure.data.toSubtypesMap
 import at.specure.util.ActiveFilter
 import at.specure.util.FilterValuesStorage
-import at.specure.util.getCurrentLatestFinishedMonth
+import at.specure.util.getCurrentMapFilterMonth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import java.io.ByteArrayOutputStream
@@ -133,7 +133,7 @@ class MapRepositoryImpl @Inject constructor(
                 val subTypes = it.filter.toSubtypesMap(types) as MutableMap<MapFilterType, List<MapTypeOptionsResponse>>
                 with(it.filter.mapFilters) {
                     storage.apply {
-                        init(types, subTypes, toMap(), toMap(), toMap(), toMap(), toMap(), Calendar.getInstance().getCurrentLatestFinishedMonth())
+                        init(types, subTypes, toMap(), toMap(), toMap(), toMap(), toMap(), Calendar.getInstance().getCurrentMapFilterMonth())
                         titleStatistics = getTypeTitle<FilterStatisticOptionResponse>()
                         titlePeriod = getTypeTitle<FilterPeriodOptionResponse>()
                         titleOperator = getTypeTitle<FilterOperatorOptionResponse>()
@@ -213,7 +213,7 @@ class MapRepositoryImpl @Inject constructor(
                     technology,
                     createCleanFilterMap<FilterOperatorOptionResponse>(),
                     createCleanFilterMap<FilterProviderOptionResponse>(),
-                    Calendar.getInstance().getCurrentLatestFinishedMonth()
+                    Calendar.getInstance().getCurrentMapFilterMonth()
                 )
             }
             markTypeAsSelected(storage.findType(active.type))
