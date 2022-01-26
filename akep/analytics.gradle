@@ -1,1 +1,9 @@
-// Add analytics dependencies and settings here if needed
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.firebase.appdistribution'
+
+dependencies {
+    implementation ("com.google.firebase:firebase-crashlytics:$versions.crashlytics"){
+        transitive = true
+    }
+}

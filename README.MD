@@ -22,9 +22,12 @@ The source code is published under [Apache version 2.0 license](https://github.c
 	1. For `app` customer selectedEnable Google Maps SDK in Google Cloud console and put your API
 	   key into `googleMapsApiKey` in flavor-config.gradle file
 	2. For other than `app` customer to enable MapBox map register and generate key on mapbox.com
-	   and set your key as environmental variable `ORG_GRADLE_PROJECT_MAPBOX_SDK_KEY`
+	   and set your key as environmental variable `ORG_GRADLE_PROJECT_MAPBOX_SDK_KEY` and replace 
+	   your public key under `mapbox_public_key` in `res/values/keys.xml` for particular selected module
 	3. For other than `app` customer to enable Here map search register and generate key on here.com
 	   and set your key as environmental variable `ORG_GRADLE_PROJECT_HERE_API_KEY`
+	4. For other than `app` customer generate `google-services.json` according to app id you set in step 2. 
+	   and paste it to root of module you selected to build
 5. Add/change endpoints information and `example.com` in file `app/src/rtr/config.json`
 
 ### VARIABLES DESCRIPTION
